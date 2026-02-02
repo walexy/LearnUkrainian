@@ -121,9 +121,9 @@
     },
     {
       "id": "ukrainian_news_slow",
-      "title": "1+1 News (with subtitles)",
-      "source": "1+1 Ukraine",
-      "url": "https://www.youtube.com/@1aborplus",
+      "title": "TSN News (1+1)",
+      "source": "TSN / 1+1 Ukraine",
+      "url": "https://www.youtube.com/channel/UCXoJ8kY9zpLBEz-8saaT3ew",
       "type": "news",
       "tier": "bridge",
       "description": "Major Ukrainian news channel. Formal, clear speech. Use auto-generated subtitles. Good for current events.",
