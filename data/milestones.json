@@ -1,0 +1,232 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "philosophy": "Language acquisition is slow and invisible day-to-day. Milestones make progress tangible and celebrate the journey, not just the destination."
+  },
+  "milestones": {
+    "cyrillic": [
+      {
+        "id": "cyrillic_first_letter",
+        "name": "First Letter",
+        "description": "Mastered your first Cyrillic letter",
+        "trigger": { "type": "letters_mastered", "count": 1 },
+        "emoji": "🔤",
+        "message": "You just unlocked your first letter! 32 more to go, but each one gets easier.",
+        "encouragement": "The first step is the hardest. You're on your way."
+      },
+      {
+        "id": "cyrillic_familiar_friends",
+        "name": "Familiar Friends",
+        "description": "Mastered all 7 letters that look like English",
+        "trigger": { "type": "category_complete", "category": "familiar" },
+        "emoji": "🤝",
+        "message": "You've conquered the easy ones! А, Е, І, О, К, М, Т are yours.",
+        "encouragement": "These letters were free. Now the real learning begins."
+      },
+      {
+        "id": "cyrillic_false_friends",
+        "name": "False Friend Defeater",
+        "description": "Mastered the tricky letters that look familiar but sound different",
+        "trigger": { "type": "category_complete", "category": "falseFriends" },
+        "emoji": "🎭",
+        "message": "В, Н, Р, С, У, Х - the tricksters are tamed! Your brain has been rewired.",
+        "encouragement": "This was the hardest part. Everything else is just new shapes."
+      },
+      {
+        "id": "cyrillic_half",
+        "name": "Halfway There",
+        "description": "Mastered 17 of 33 letters",
+        "trigger": { "type": "letters_mastered", "count": 17 },
+        "emoji": "⚡",
+        "message": "You can now read over half the alphabet. Words are starting to make sense.",
+        "encouragement": "Keep going - momentum is on your side."
+      },
+      {
+        "id": "cyrillic_complete",
+        "name": "Alphabet Unlocked",
+        "description": "Mastered all 33 Ukrainian letters",
+        "trigger": { "type": "letters_mastered", "count": 33 },
+        "emoji": "🔓",
+        "message": "You can read Ukrainian! The entire written world of Ukrainian is now open to you.",
+        "encouragement": "This is huge. You've given yourself access to 45 million people's written thoughts."
+      },
+      {
+        "id": "cyrillic_first_word",
+        "name": "First Word",
+        "description": "Successfully read your first complete word",
+        "trigger": { "type": "words_read", "count": 1 },
+        "emoji": "📖",
+        "message": "You just read a word in Ukrainian! Let that sink in.",
+        "encouragement": "Every fluent speaker started exactly where you are."
+      },
+      {
+        "id": "cyrillic_city_names",
+        "name": "City Navigator",
+        "description": "Can read all major Ukrainian city names",
+        "trigger": { "type": "words_read", "category": "cities" },
+        "emoji": "🗺️",
+        "message": "Київ, Львів, Одеса, Харків - you can read the map now.",
+        "encouragement": "Geography becomes personal when you can read the names."
+      }
+    ],
+    "listening": [
+      {
+        "id": "listening_first_session",
+        "name": "First Listen",
+        "description": "Completed your first listening session",
+        "trigger": { "type": "sessions_completed", "count": 1 },
+        "emoji": "🎧",
+        "message": "Your first hour of Ukrainian input! This is how acquisition starts.",
+        "encouragement": "Every hour counts, even when you understand nothing."
+      },
+      {
+        "id": "listening_10_hours",
+        "name": "10 Hours",
+        "description": "10 hours of Ukrainian listening",
+        "trigger": { "type": "total_hours", "count": 10 },
+        "emoji": "⏰",
+        "message": "10 hours of Ukrainian in your ears. Your brain is noticing patterns, even if you don't realize it yet.",
+        "encouragement": "At this point, familiar sounds are emerging from the noise."
+      },
+      {
+        "id": "listening_25_hours",
+        "name": "25 Hours",
+        "description": "25 hours of Ukrainian listening",
+        "trigger": { "type": "total_hours", "count": 25 },
+        "emoji": "🌅",
+        "message": "25 hours! You're beyond 'tourist' level input. This is when patterns start clicking.",
+        "encouragement": "You probably recognize common words now without trying."
+      },
+      {
+        "id": "listening_50_hours",
+        "name": "50 Hour Club",
+        "description": "50 hours of Ukrainian listening",
+        "trigger": { "type": "total_hours", "count": 50 },
+        "emoji": "🏆",
+        "message": "50 hours of input! Most people quit before this. You didn't.",
+        "encouragement": "Your colleagues' Ukrainian-accented English probably makes more sense now."
+      },
+      {
+        "id": "listening_100_hours",
+        "name": "Century",
+        "description": "100 hours of Ukrainian listening",
+        "trigger": { "type": "total_hours", "count": 100 },
+        "emoji": "💯",
+        "message": "100 HOURS. You've put in more listening time than most 'learners' ever will.",
+        "encouragement": "You should notice comprehension jumping. Words you never studied make sense."
+      },
+      {
+        "id": "listening_200_hours",
+        "name": "Dedicated",
+        "description": "200 hours of Ukrainian listening",
+        "trigger": { "type": "total_hours", "count": 200 },
+        "emoji": "🎯",
+        "message": "200 hours. At your commute pace, this took most of a year. Incredible commitment.",
+        "encouragement": "You're approaching real comprehension. Keep going."
+      },
+      {
+        "id": "listening_365_hours",
+        "name": "Year of Ukrainian",
+        "description": "365 hours - one hour per day for a year",
+        "trigger": { "type": "total_hours", "count": 365 },
+        "emoji": "📅",
+        "message": "A full year's worth of daily listening. This is how languages are truly acquired.",
+        "encouragement": "You're no longer 'learning' Ukrainian. You're becoming someone who knows Ukrainian."
+      },
+      {
+        "id": "listening_first_native",
+        "name": "Gone Native",
+        "description": "First time listening to native-speed content",
+        "trigger": { "type": "tier_reached", "tier": "native" },
+        "emoji": "🚀",
+        "message": "You just listened to what Ukrainians actually listen to. No training wheels.",
+        "encouragement": "Even if you caught 20%, that's real comprehension."
+      },
+      {
+        "id": "comprehension_50",
+        "name": "Half Understanding",
+        "description": "Reported 50%+ comprehension on bridge content",
+        "trigger": { "type": "comprehension_threshold", "tier": "bridge", "threshold": 50 },
+        "emoji": "🌓",
+        "message": "You understand half of what you hear in real Ukrainian content!",
+        "encouragement": "This is the tipping point. Comprehension accelerates from here."
+      },
+      {
+        "id": "comprehension_80",
+        "name": "Fluent Listener",
+        "description": "Reported 80%+ comprehension on native content",
+        "trigger": { "type": "comprehension_threshold", "tier": "native", "threshold": 80 },
+        "emoji": "🌕",
+        "message": "80% comprehension of native Ukrainian. You UNDERSTAND this language now.",
+        "encouragement": "Production will follow naturally. You've done the hard part."
+      }
+    ],
+    "streaks": [
+      {
+        "id": "streak_7",
+        "name": "Week Warrior",
+        "description": "7-day listening streak",
+        "trigger": { "type": "streak", "days": 7 },
+        "emoji": "🔥",
+        "message": "A full week of daily Ukrainian! Habit forming.",
+        "encouragement": "Consistency beats intensity. Keep showing up."
+      },
+      {
+        "id": "streak_30",
+        "name": "Monthly Master",
+        "description": "30-day listening streak",
+        "trigger": { "type": "streak", "days": 30 },
+        "emoji": "📆",
+        "message": "30 days in a row. This isn't a hobby anymore - it's a habit.",
+        "encouragement": "A month of daily input rewires your brain."
+      },
+      {
+        "id": "streak_100",
+        "name": "Unstoppable",
+        "description": "100-day listening streak",
+        "trigger": { "type": "streak", "days": 100 },
+        "emoji": "⭐",
+        "message": "100 days without missing. You're not 'trying to learn Ukrainian.' You're someone who listens to Ukrainian daily.",
+        "encouragement": "Identity shift achieved. This is who you are now."
+      }
+    ],
+    "special": [
+      {
+        "id": "first_colleague_moment",
+        "name": "Bridge Moment",
+        "description": "First time you understood something a colleague said in Ukrainian",
+        "trigger": { "type": "manual", "category": "colleague" },
+        "emoji": "🌉",
+        "message": "You understood something! This is why you started.",
+        "encouragement": "Every small moment like this will multiply."
+      },
+      {
+        "id": "helped_colleague",
+        "name": "Helper",
+        "description": "First time your Ukrainian knowledge helped a colleague",
+        "trigger": { "type": "manual", "category": "colleague" },
+        "emoji": "🤝",
+        "message": "Your Ukrainian helped someone. The investment is paying off.",
+        "encouragement": "You're not just learning - you're building bridges."
+      },
+      {
+        "id": "first_dyakuyu",
+        "name": "First Дякую",
+        "description": "Said 'Дякую' to a colleague for the first time",
+        "trigger": { "type": "manual", "category": "speaking" },
+        "emoji": "🙏",
+        "message": "You spoke Ukrainian to a real person! That took courage.",
+        "encouragement": "Their face probably lit up. Remember that feeling."
+      }
+    ]
+  },
+  "celebrationMessages": {
+    "generic": [
+      "Progress isn't always visible day-to-day, but it's happening.",
+      "Every hour of input is rewiring your brain.",
+      "You're not studying Ukrainian. You're acquiring it.",
+      "The path to fluency is just many small moments like this one.",
+      "Your future self will thank your present self for this consistency."
+    ]
+  }
+}

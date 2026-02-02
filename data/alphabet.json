@@ -1,0 +1,683 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "totalLetters": 33,
+    "categories": {
+      "familiar": "Look and sound similar to Latin letters - instant wins",
+      "falseFriends": "Look familiar but sound different - need rewiring",
+      "newLearnable": "New shapes, but consistent sounds",
+      "ukrainianSpecials": "Unique to Ukrainian - learn with context"
+    }
+  },
+  "letters": [
+    {
+      "letter": "А",
+      "lowercase": "а",
+      "name": "ah",
+      "sound": "a (as in 'father')",
+      "ipa": "ɑ",
+      "category": "familiar",
+      "mnemonic": {
+        "visual": "Looks exactly like English A",
+        "story": "A is A - your first free letter! Think 'Ah, that was easy!'",
+        "hook": "Ah!"
+      },
+      "exampleWords": [
+        { "word": "Авто", "transliteration": "avto", "meaning": "car", "note": "Cognate with 'auto'" },
+        { "word": "Адреса", "transliteration": "adresa", "meaning": "address", "note": "Cognate!" }
+      ],
+      "commonConfusions": [],
+      "order": 1
+    },
+    {
+      "letter": "Б",
+      "lowercase": "б",
+      "name": "beh",
+      "sound": "b (as in 'boy')",
+      "ipa": "b",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like a 6 or a lowercase 'b' with a hat",
+        "story": "The 'b' got dressed up with a little hat on top - still says 'b'!",
+        "hook": "B with a Beret"
+      },
+      "exampleWords": [
+        { "word": "Банк", "transliteration": "bank", "meaning": "bank", "note": "Cognate!" },
+        { "word": "Брат", "transliteration": "brat", "meaning": "brother", "note": "Same Slavic root as English 'brother'" }
+      ],
+      "commonConfusions": ["В (which looks like B but sounds like V)"],
+      "order": 2
+    },
+    {
+      "letter": "В",
+      "lowercase": "в",
+      "name": "veh",
+      "sound": "v (as in 'vine')",
+      "ipa": "v",
+      "category": "falseFriends",
+      "mnemonic": {
+        "visual": "Looks like English B, but sounds like V",
+        "story": "The B got a 'V'oice transplant. It looks like B but speaks V.",
+        "hook": "B-body, V-voice"
+      },
+      "exampleWords": [
+        { "word": "Вода", "transliteration": "voda", "meaning": "water", "note": "Related to 'vodka' (little water)" },
+        { "word": "Він", "transliteration": "vin", "meaning": "he", "note": "Common pronoun" }
+      ],
+      "commonConfusions": ["English B - this is the #1 false friend!"],
+      "order": 3
+    },
+    {
+      "letter": "Г",
+      "lowercase": "г",
+      "name": "heh",
+      "sound": "h (soft, breathy, like 'hello')",
+      "ipa": "ɦ",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like an upside-down L or a gallows",
+        "story": "The Gallows makes you go 'Hhhh...' (breathy sigh)",
+        "hook": "Gallows goes Hhhh"
+      },
+      "exampleWords": [
+        { "word": "Голова", "transliteration": "holova", "meaning": "head", "note": "" },
+        { "word": "Гарний", "transliteration": "harnyi", "meaning": "beautiful/nice", "note": "Useful compliment!" }
+      ],
+      "commonConfusions": ["Ґ (hard G, very rare)", "English G"],
+      "order": 4
+    },
+    {
+      "letter": "Ґ",
+      "lowercase": "ґ",
+      "name": "geh",
+      "sound": "g (hard, as in 'go')",
+      "ipa": "g",
+      "category": "ukrainianSpecials",
+      "mnemonic": {
+        "visual": "Same as Г but with an uptick - like it's reaching up to 'Grab'",
+        "story": "The uptick is its little hand Grabbing for something. Hard G Grabs.",
+        "hook": "Grab with the uptick"
+      },
+      "exampleWords": [
+        { "word": "Ґанок", "transliteration": "ganok", "meaning": "porch", "note": "One of few native words with Ґ" },
+        { "word": "Ґудзик", "transliteration": "gudzyk", "meaning": "button", "note": "" }
+      ],
+      "commonConfusions": ["Г (soft H) - Ґ is rare, you'll mostly see Г"],
+      "order": 5
+    },
+    {
+      "letter": "Д",
+      "lowercase": "д",
+      "name": "deh",
+      "sound": "d (as in 'dog')",
+      "ipa": "d",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like a little house or doghouse",
+        "story": "The Dog's house - Д is for Dog and for Дім (home)",
+        "hook": "Doghouse = D"
+      },
+      "exampleWords": [
+        { "word": "Дім", "transliteration": "dim", "meaning": "home/house", "note": "Related to 'dome'" },
+        { "word": "Дякую", "transliteration": "dyakuyu", "meaning": "thank you", "note": "Essential phrase!" },
+        { "word": "Добре", "transliteration": "dobre", "meaning": "good/okay", "note": "Very common!" }
+      ],
+      "commonConfusions": [],
+      "order": 6
+    },
+    {
+      "letter": "Е",
+      "lowercase": "е",
+      "name": "eh",
+      "sound": "e (as in 'pet')",
+      "ipa": "ɛ",
+      "category": "familiar",
+      "mnemonic": {
+        "visual": "Looks exactly like English E",
+        "story": "E is E - say 'Eh!' like a Canadian",
+        "hook": "Eh!"
+      },
+      "exampleWords": [
+        { "word": "Енергія", "transliteration": "enerhiya", "meaning": "energy", "note": "Cognate!" },
+        { "word": "Екран", "transliteration": "ekran", "meaning": "screen", "note": "Cognate!" }
+      ],
+      "commonConfusions": ["Є (which adds a Y sound: 'yeh')"],
+      "order": 7
+    },
+    {
+      "letter": "Є",
+      "lowercase": "є",
+      "name": "yeh",
+      "sound": "ye (as in 'yes')",
+      "ipa": "jɛ",
+      "category": "ukrainianSpecials",
+      "mnemonic": {
+        "visual": "E with a little Euro-style crossbar, or E facing backwards",
+        "story": "The Euro-E says 'YEh!' - it's E with a Y in front",
+        "hook": "Euro says YEh"
+      },
+      "exampleWords": [
+        { "word": "Європа", "transliteration": "Yevropa", "meaning": "Europe", "note": "Hear the 'Ye' at start!" },
+        { "word": "Є", "transliteration": "ye", "meaning": "is/there is", "note": "Very common word!" }
+      ],
+      "commonConfusions": ["Е (plain 'eh' without the Y)"],
+      "order": 8
+    },
+    {
+      "letter": "Ж",
+      "lowercase": "ж",
+      "name": "zheh",
+      "sound": "zh (as in 'measure' or 'vision')",
+      "ipa": "ʒ",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like a beetle or bug with legs",
+        "story": "The bug goes 'ZHzhzhzh' - like a buzzing beetle",
+        "hook": "Bug goes ZHzh"
+      },
+      "exampleWords": [
+        { "word": "Жінка", "transliteration": "zhinka", "meaning": "woman/wife", "note": "" },
+        { "word": "Життя", "transliteration": "zhyttya", "meaning": "life", "note": "" }
+      ],
+      "commonConfusions": ["English J (which doesn't exist in Ukrainian)"],
+      "order": 9
+    },
+    {
+      "letter": "З",
+      "lowercase": "з",
+      "name": "zeh",
+      "sound": "z (as in 'zoo')",
+      "ipa": "z",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like a curly 3 or the number 3",
+        "story": "Three Zebras at the Zoo - З is for Zoo sounds",
+        "hook": "3 = Z"
+      },
+      "exampleWords": [
+        { "word": "Зима", "transliteration": "zyma", "meaning": "winter", "note": "" },
+        { "word": "Знати", "transliteration": "znaty", "meaning": "to know", "note": "Cognate with 'know' (gn-)" }
+      ],
+      "commonConfusions": [],
+      "order": 10
+    },
+    {
+      "letter": "И",
+      "lowercase": "и",
+      "name": "y",
+      "sound": "i (short, as in 'bit' or 'myth')",
+      "ipa": "ɪ",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like a backwards N or the letter И",
+        "story": "Think 'bIt' - the short i sound. The И is 'iffy' - a short, quick sound",
+        "hook": "Iffy short i"
+      },
+      "exampleWords": [
+        { "word": "Ми", "transliteration": "my", "meaning": "we", "note": "Common pronoun" },
+        { "word": "Вино", "transliteration": "vyno", "meaning": "wine", "note": "Cognate!" }
+      ],
+      "commonConfusions": ["І (which is the 'ee' sound)", "Й (which is consonant Y)"],
+      "order": 11
+    },
+    {
+      "letter": "І",
+      "lowercase": "і",
+      "name": "ee",
+      "sound": "i (long, as in 'machine')",
+      "ipa": "i",
+      "category": "familiar",
+      "mnemonic": {
+        "visual": "Looks like English I with a dot",
+        "story": "I is 'ee' - think 'machIne'. The dot is its little 'ee!' of excitement",
+        "hook": "I says ee!"
+      },
+      "exampleWords": [
+        { "word": "І", "transliteration": "i", "meaning": "and", "note": "Most common word!" },
+        { "word": "Місто", "transliteration": "misto", "meaning": "city", "note": "" }
+      ],
+      "commonConfusions": ["И (short i, as in 'bit')"],
+      "order": 12
+    },
+    {
+      "letter": "Ї",
+      "lowercase": "ї",
+      "name": "yee",
+      "sound": "yi (as in 'yield')",
+      "ipa": "ji",
+      "category": "ukrainianSpecials",
+      "mnemonic": {
+        "visual": "I with TWO dots - double the fun, double the sound",
+        "story": "Two dots = two sounds: Y + I = 'YEE!' Like excited squealing",
+        "hook": "Two dots = Yee!"
+      },
+      "exampleWords": [
+        { "word": "Їжа", "transliteration": "yizha", "meaning": "food", "note": "" },
+        { "word": "Україна", "transliteration": "Ukrayina", "meaning": "Ukraine", "note": "The country's name!" }
+      ],
+      "commonConfusions": ["І (just 'ee' without the Y)"],
+      "order": 13
+    },
+    {
+      "letter": "Й",
+      "lowercase": "й",
+      "name": "yot",
+      "sound": "y (consonant, as in 'yes')",
+      "ipa": "j",
+      "category": "ukrainianSpecials",
+      "mnemonic": {
+        "visual": "И with a little curved tail (breve) on top",
+        "story": "The breve is like a smile saying 'Yes!' - Й is the Y in Yes",
+        "hook": "Yes! (smile on top)"
+      },
+      "exampleWords": [
+        { "word": "Йти", "transliteration": "yty", "meaning": "to go (on foot)", "note": "Very common verb" },
+        { "word": "Йогурт", "transliteration": "yohurt", "meaning": "yogurt", "note": "Cognate!" }
+      ],
+      "commonConfusions": ["И (vowel sound, not consonant Y)"],
+      "order": 14
+    },
+    {
+      "letter": "К",
+      "lowercase": "к",
+      "name": "kah",
+      "sound": "k (as in 'kite')",
+      "ipa": "k",
+      "category": "familiar",
+      "mnemonic": {
+        "visual": "Looks exactly like English K",
+        "story": "K is K - kicks are free!",
+        "hook": "K kicks!"
+      },
+      "exampleWords": [
+        { "word": "Кава", "transliteration": "kava", "meaning": "coffee", "note": "Cognate with 'coffee'" },
+        { "word": "Книга", "transliteration": "knyha", "meaning": "book", "note": "" }
+      ],
+      "commonConfusions": [],
+      "order": 15
+    },
+    {
+      "letter": "Л",
+      "lowercase": "л",
+      "name": "el",
+      "sound": "l (as in 'lamp')",
+      "ipa": "l",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like a tent or the Greek letter Lambda (Λ) upside down",
+        "story": "A Lamp in a tent - Л Lights up the night",
+        "hook": "Lamp in a tent"
+      },
+      "exampleWords": [
+        { "word": "Любов", "transliteration": "lyubov", "meaning": "love", "note": "" },
+        { "word": "Ліс", "transliteration": "lis", "meaning": "forest", "note": "" }
+      ],
+      "commonConfusions": [],
+      "order": 16
+    },
+    {
+      "letter": "М",
+      "lowercase": "м",
+      "name": "em",
+      "sound": "m (as in 'mother')",
+      "ipa": "m",
+      "category": "familiar",
+      "mnemonic": {
+        "visual": "Looks exactly like English M",
+        "story": "M is M - for Мама (mom)!",
+        "hook": "Мама!"
+      },
+      "exampleWords": [
+        { "word": "Мама", "transliteration": "mama", "meaning": "mom", "note": "Universal!" },
+        { "word": "Море", "transliteration": "more", "meaning": "sea", "note": "Related to 'marine'" }
+      ],
+      "commonConfusions": [],
+      "order": 17
+    },
+    {
+      "letter": "Н",
+      "lowercase": "н",
+      "name": "en",
+      "sound": "n (as in 'no')",
+      "ipa": "n",
+      "category": "falseFriends",
+      "mnemonic": {
+        "visual": "Looks like English H, but says N!",
+        "story": "H got a Name change - now it's N. H-body, N-name.",
+        "hook": "H-look, N-sound"
+      },
+      "exampleWords": [
+        { "word": "Ні", "transliteration": "ni", "meaning": "no", "note": "Essential word!" },
+        { "word": "Ніч", "transliteration": "nich", "meaning": "night", "note": "Cognate!" }
+      ],
+      "commonConfusions": ["English H - this is a major false friend!"],
+      "order": 18
+    },
+    {
+      "letter": "О",
+      "lowercase": "о",
+      "name": "oh",
+      "sound": "o (as in 'or')",
+      "ipa": "ɔ",
+      "category": "familiar",
+      "mnemonic": {
+        "visual": "Looks exactly like English O",
+        "story": "O is O - Oh so easy!",
+        "hook": "Oh!"
+      },
+      "exampleWords": [
+        { "word": "Око", "transliteration": "oko", "meaning": "eye", "note": "Related to 'ocular'" },
+        { "word": "Один", "transliteration": "odyn", "meaning": "one", "note": "" }
+      ],
+      "commonConfusions": [],
+      "order": 19
+    },
+    {
+      "letter": "П",
+      "lowercase": "п",
+      "name": "peh",
+      "sound": "p (as in 'pen')",
+      "ipa": "p",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like a doorway or the Greek letter Pi (Π)",
+        "story": "Walk through the Portal - П is the Passageway that says 'P'",
+        "hook": "Portal = P"
+      },
+      "exampleWords": [
+        { "word": "Привіт", "transliteration": "pryvit", "meaning": "hello (informal)", "note": "Essential greeting!" },
+        { "word": "Пиво", "transliteration": "pyvo", "meaning": "beer", "note": "" }
+      ],
+      "commonConfusions": ["English P looks different but same sound"],
+      "order": 20
+    },
+    {
+      "letter": "Р",
+      "lowercase": "р",
+      "name": "er",
+      "sound": "r (rolled/trilled, as in Spanish 'perro')",
+      "ipa": "r",
+      "category": "falseFriends",
+      "mnemonic": {
+        "visual": "Looks like English P, but it's a rolled R!",
+        "story": "P got a Russian/Ukrainian accent and now Rolls its R's! P-shape, R-sound.",
+        "hook": "P-look, R-roll"
+      },
+      "exampleWords": [
+        { "word": "Ресторан", "transliteration": "restoran", "meaning": "restaurant", "note": "Cognate!" },
+        { "word": "Робота", "transliteration": "robota", "meaning": "work", "note": "Origin of 'robot'!" }
+      ],
+      "commonConfusions": ["English P - another major false friend!"],
+      "order": 21
+    },
+    {
+      "letter": "С",
+      "lowercase": "с",
+      "name": "es",
+      "sound": "s (as in 'sun')",
+      "ipa": "s",
+      "category": "falseFriends",
+      "mnemonic": {
+        "visual": "Looks like English C, but always says S (never K)!",
+        "story": "C decided to be conSiStent - only S, never K. C-shape, always S-sound.",
+        "hook": "C-look, S-always"
+      },
+      "exampleWords": [
+        { "word": "Сонце", "transliteration": "sontse", "meaning": "sun", "note": "Cognate with 'sun'!" },
+        { "word": "Слово", "transliteration": "slovo", "meaning": "word", "note": "" }
+      ],
+      "commonConfusions": ["English C (which can be K or S)"],
+      "order": 22
+    },
+    {
+      "letter": "Т",
+      "lowercase": "т",
+      "name": "teh",
+      "sound": "t (as in 'top')",
+      "ipa": "t",
+      "category": "familiar",
+      "mnemonic": {
+        "visual": "Looks exactly like English T",
+        "story": "T is T - Terrific!",
+        "hook": "T is T!"
+      },
+      "exampleWords": [
+        { "word": "Так", "transliteration": "tak", "meaning": "yes", "note": "Essential word!" },
+        { "word": "Тато", "transliteration": "tato", "meaning": "dad", "note": "" }
+      ],
+      "commonConfusions": [],
+      "order": 23
+    },
+    {
+      "letter": "У",
+      "lowercase": "у",
+      "name": "oo",
+      "sound": "u (as in 'moon')",
+      "ipa": "u",
+      "category": "falseFriends",
+      "mnemonic": {
+        "visual": "Looks like English Y, but says 'OO'!",
+        "story": "Y went to Ukraine and now says 'OOkraine!' Y-shape, OO-sound.",
+        "hook": "Y says OO"
+      },
+      "exampleWords": [
+        { "word": "Україна", "transliteration": "Ukrayina", "meaning": "Ukraine", "note": "Starts with OO!" },
+        { "word": "Університет", "transliteration": "universytet", "meaning": "university", "note": "Cognate!" }
+      ],
+      "commonConfusions": ["English Y (which doesn't say OO)"],
+      "order": 24
+    },
+    {
+      "letter": "Ф",
+      "lowercase": "ф",
+      "name": "ef",
+      "sound": "f (as in 'fun')",
+      "ipa": "f",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like a person with hands on hips, or the Greek Phi (Φ)",
+        "story": "A Frustrated person with hands on hips going 'F-f-f!'",
+        "hook": "Frustrated = F"
+      },
+      "exampleWords": [
+        { "word": "Фільм", "transliteration": "film", "meaning": "film/movie", "note": "Cognate!" },
+        { "word": "Фото", "transliteration": "foto", "meaning": "photo", "note": "Cognate!" }
+      ],
+      "commonConfusions": [],
+      "order": 25
+    },
+    {
+      "letter": "Х",
+      "lowercase": "х",
+      "name": "khah",
+      "sound": "kh (as in Scottish 'loch' or German 'Bach')",
+      "ipa": "x",
+      "category": "falseFriends",
+      "mnemonic": {
+        "visual": "Looks like English X, but it's a throat-clearing KH!",
+        "story": "X marks the spot where you clear your throat: 'KHkhkh!'",
+        "hook": "X = throat clear"
+      },
+      "exampleWords": [
+        { "word": "Хліб", "transliteration": "khlib", "meaning": "bread", "note": "Essential food word!" },
+        { "word": "Хороший", "transliteration": "khoroshyi", "meaning": "good", "note": "" }
+      ],
+      "commonConfusions": ["English X (which doesn't exist in Ukrainian)"],
+      "order": 26
+    },
+    {
+      "letter": "Ц",
+      "lowercase": "ц",
+      "name": "tseh",
+      "sound": "ts (as in 'cats')",
+      "ipa": "ts",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like a U with a little tail, or a lowercase u with a hook",
+        "story": "The TS-unami wave - Ц makes the 'ts' at the end of 'caTS'",
+        "hook": "caTS wave"
+      },
+      "exampleWords": [
+        { "word": "Центр", "transliteration": "tsentr", "meaning": "center", "note": "Cognate!" },
+        { "word": "Цікаво", "transliteration": "tsikavo", "meaning": "interesting", "note": "" }
+      ],
+      "commonConfusions": [],
+      "order": 27
+    },
+    {
+      "letter": "Ч",
+      "lowercase": "ч",
+      "name": "cheh",
+      "sound": "ch (as in 'church')",
+      "ipa": "tʃ",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like an upside-down chair or the number 4",
+        "story": "Sit in the CHair - Ч is for CHurch and CHair",
+        "hook": "CHair"
+      },
+      "exampleWords": [
+        { "word": "Час", "transliteration": "chas", "meaning": "time", "note": "" },
+        { "word": "Чоловік", "transliteration": "cholovik", "meaning": "man/husband", "note": "" }
+      ],
+      "commonConfusions": [],
+      "order": 28
+    },
+    {
+      "letter": "Ш",
+      "lowercase": "ш",
+      "name": "shah",
+      "sound": "sh (as in 'ship')",
+      "ipa": "ʃ",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like a comb with three teeth, or the letter W upside down",
+        "story": "SHush! The comb is combing quietly - 'SHhhhh!'",
+        "hook": "SHush comb"
+      },
+      "exampleWords": [
+        { "word": "Школа", "transliteration": "shkola", "meaning": "school", "note": "Cognate!" },
+        { "word": "Шість", "transliteration": "shist", "meaning": "six", "note": "" }
+      ],
+      "commonConfusions": ["Щ (which is SHCH - longer)"],
+      "order": 29
+    },
+    {
+      "letter": "Щ",
+      "lowercase": "щ",
+      "name": "shchah",
+      "sound": "shch (as in 'fresh cheese')",
+      "ipa": "ʃtʃ",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like Ш with a tail - it's Ш plus something extra",
+        "story": "SH-Comb grew a tail and now says 'SHCH!' - like 'freSH CHeese'",
+        "hook": "SH + CH = SHCH"
+      },
+      "exampleWords": [
+        { "word": "Ще", "transliteration": "shche", "meaning": "still/yet/more", "note": "Very common word!" },
+        { "word": "Щастя", "transliteration": "shchastya", "meaning": "happiness", "note": "" }
+      ],
+      "commonConfusions": ["Ш (just SH, without the CH)"],
+      "order": 30
+    },
+    {
+      "letter": "Ь",
+      "lowercase": "ь",
+      "name": "soft sign",
+      "sound": "(softens previous consonant - no sound of its own)",
+      "ipa": "ʲ",
+      "category": "ukrainianSpecials",
+      "mnemonic": {
+        "visual": "Looks like a lowercase b without the top - a soft, gentle letter",
+        "story": "The Soft Sign is shy - it has no voice, just makes the letter before it softer and gentler",
+        "hook": "Shy softener"
+      },
+      "exampleWords": [
+        { "word": "Мати", "transliteration": "maty", "meaning": "to have", "note": "No soft sign" },
+        { "word": "Мать", "transliteration": "mat'", "meaning": "mother (poetic)", "note": "Soft T at end" },
+        { "word": "День", "transliteration": "den'", "meaning": "day", "note": "Soft N at end" }
+      ],
+      "commonConfusions": ["This is a modifier, not a standalone sound"],
+      "order": 31
+    },
+    {
+      "letter": "Ю",
+      "lowercase": "ю",
+      "name": "yu",
+      "sound": "yu (as in 'universe')",
+      "ipa": "ju",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like an I and O fused together, or 'IO'",
+        "story": "YOu! - Ю points at 'You' with its combined shape",
+        "hook": "YOu!"
+      },
+      "exampleWords": [
+        { "word": "Юнак", "transliteration": "yunak", "meaning": "young man", "note": "" },
+        { "word": "Люблю", "transliteration": "lyublyu", "meaning": "I love", "note": "Ends in YU sound" }
+      ],
+      "commonConfusions": [],
+      "order": 32
+    },
+    {
+      "letter": "Я",
+      "lowercase": "я",
+      "name": "ya",
+      "sound": "ya (as in 'yacht')",
+      "ipa": "jɑ",
+      "category": "newLearnable",
+      "mnemonic": {
+        "visual": "Looks like a backwards R",
+        "story": "R turned around to face YA! 'Hey, YA! Over here!'",
+        "hook": "Backwards R = YA!"
+      },
+      "exampleWords": [
+        { "word": "Я", "transliteration": "ya", "meaning": "I (pronoun)", "note": "Most common word!" },
+        { "word": "Яблуко", "transliteration": "yabluko", "meaning": "apple", "note": "" }
+      ],
+      "commonConfusions": ["English R - they look similar but Я says YA"],
+      "order": 33
+    }
+  ],
+  "learningOrder": {
+    "phase1_instant": ["А", "О", "К", "М", "Т", "І", "Е"],
+    "phase2_falseFriends": ["В", "Н", "Р", "С", "У", "Х"],
+    "phase3_newShapes": ["Б", "Г", "Д", "Л", "П", "Ф", "З", "Ч", "Ш"],
+    "phase4_complex": ["Ж", "Ц", "Щ", "И", "Ю", "Я"],
+    "phase5_specials": ["Є", "Ї", "Й", "Ґ", "Ь"]
+  },
+  "practiceWords": {
+    "level1_simple": [
+      { "word": "Мама", "meaning": "mom" },
+      { "word": "Тато", "meaning": "dad" },
+      { "word": "Так", "meaning": "yes" },
+      { "word": "Ні", "meaning": "no" },
+      { "word": "І", "meaning": "and" },
+      { "word": "Кава", "meaning": "coffee" }
+    ],
+    "level2_cognates": [
+      { "word": "Банк", "meaning": "bank" },
+      { "word": "Метро", "meaning": "metro" },
+      { "word": "Ресторан", "meaning": "restaurant" },
+      { "word": "Фільм", "meaning": "film" },
+      { "word": "Центр", "meaning": "center" },
+      { "word": "Університет", "meaning": "university" }
+    ],
+    "level3_essential": [
+      { "word": "Привіт", "meaning": "hello" },
+      { "word": "Дякую", "meaning": "thank you" },
+      { "word": "Добре", "meaning": "good/okay" },
+      { "word": "Будь ласка", "meaning": "please/you're welcome" },
+      { "word": "Вибачте", "meaning": "excuse me/sorry" },
+      { "word": "До побачення", "meaning": "goodbye" }
+    ],
+    "level4_places": [
+      { "word": "Київ", "meaning": "Kyiv" },
+      { "word": "Україна", "meaning": "Ukraine" },
+      { "word": "Львів", "meaning": "Lviv" },
+      { "word": "Одеса", "meaning": "Odesa" },
+      { "word": "Харків", "meaning": "Kharkiv" }
+    ]
+  }
+}

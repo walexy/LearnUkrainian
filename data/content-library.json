@@ -1,0 +1,346 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2026-02-02",
+    "tiers": {
+      "gateway": "Beginner-friendly content (weeks 1-8). Slow, clear speech. Often designed for learners.",
+      "bridge": "Intermediate content (months 2-6). Real Ukrainian but accessible. Transcripts help.",
+      "native": "Full-speed native content (month 6+). What Ukrainians actually watch/listen to."
+    },
+    "difficultyLevels": {
+      "speed": ["slow", "moderate", "native"],
+      "vocabulary": ["beginner", "intermediate", "advanced"],
+      "accent": ["standard", "regional", "mixed"]
+    }
+  },
+  "content": [
+    {
+      "id": "ukrainian_lessons_podcast",
+      "title": "Ukrainian Lessons Podcast",
+      "source": "Ukrainian Lessons",
+      "url": "https://www.ukrainianlessons.com/podcast/",
+      "type": "podcast",
+      "tier": "gateway",
+      "description": "Specifically designed for learners. Each episode teaches vocabulary through stories and conversations. Host speaks clearly and explains in English.",
+      "duration": null,
+      "episodes": 200,
+      "topics": ["daily life", "culture", "vocabulary", "grammar"],
+      "difficulty": {
+        "speed": "slow",
+        "vocabulary": "beginner",
+        "accent": "standard"
+      },
+      "hasSubtitles": false,
+      "hasTranscript": true,
+      "recommended": true,
+      "whyIncluded": "Gold standard for beginner listening. Perfect for commute. Start with Season 1, Episode 1.",
+      "startHere": "Season 1, Episode 1: Ukrainian Alphabet"
+    },
+    {
+      "id": "easy_ukrainian",
+      "title": "Easy Ukrainian (Easy Languages)",
+      "source": "Easy Languages",
+      "url": "https://www.youtube.com/playlist?list=PLA5UIoabheFMYWWnGFFxl8_nvVZWZSykc",
+      "type": "video",
+      "tier": "gateway",
+      "description": "Street interviews with real Ukrainians. Subtitles in Ukrainian AND English simultaneously. Great for connecting written and spoken forms.",
+      "duration": null,
+      "episodes": 30,
+      "topics": ["daily life", "opinions", "culture", "food", "travel"],
+      "difficulty": {
+        "speed": "moderate",
+        "vocabulary": "beginner",
+        "accent": "mixed"
+      },
+      "hasSubtitles": true,
+      "hasTranscript": true,
+      "recommended": true,
+      "whyIncluded": "Dual subtitles are perfect for the 'notice the gap' phase. Real people, natural speech, but fully supported.",
+      "startHere": "Any episode that interests you - topic matters more than order"
+    },
+    {
+      "id": "ukrainian_with_anna",
+      "title": "Learn Ukrainian with Anna",
+      "source": "YouTube",
+      "url": "https://www.youtube.com/@LearnUkrainianWithAnna",
+      "type": "video",
+      "tier": "gateway",
+      "description": "Clear, teacher-style explanations. Good for understanding patterns and rules. Supplements pure input with some explicit instruction.",
+      "duration": null,
+      "episodes": 100,
+      "topics": ["grammar", "pronunciation", "vocabulary", "culture"],
+      "difficulty": {
+        "speed": "slow",
+        "vocabulary": "beginner",
+        "accent": "standard"
+      },
+      "hasSubtitles": true,
+      "hasTranscript": false,
+      "recommended": true,
+      "whyIncluded": "When you want to understand WHY something works, not just hear it. Good complement to pure input.",
+      "startHere": "Ukrainian Alphabet video"
+    },
+    {
+      "id": "ukrainer_main",
+      "title": "Ukraїner Documentary Series",
+      "source": "Ukraїner",
+      "url": "https://www.youtube.com/@Ukrainer",
+      "type": "documentary",
+      "tier": "bridge",
+      "description": "Stunning documentaries about Ukrainian regions, people, crafts, and traditions. Beautiful cinematography, real interviews, subtitle support.",
+      "duration": null,
+      "episodes": 200,
+      "topics": ["history", "culture", "crafts", "regions", "people", "traditions"],
+      "difficulty": {
+        "speed": "moderate",
+        "vocabulary": "intermediate",
+        "accent": "mixed"
+      },
+      "hasSubtitles": true,
+      "hasTranscript": false,
+      "recommended": true,
+      "whyIncluded": "Your historical interests align perfectly here. Emotionally engaging content makes input stick. Start with English subs, graduate to Ukrainian subs.",
+      "startHere": "Pick a region or topic that interests you most",
+      "suggestedEpisodes": [
+        {
+          "title": "The Bandura Makers of Chernihiv",
+          "why": "Musical instrument craftsmanship + history",
+          "url": "search for this on channel"
+        },
+        {
+          "title": "Crimean Tatars",
+          "why": "Important minority culture and history",
+          "url": "search for this on channel"
+        },
+        {
+          "title": "Hutsul Culture in the Carpathians",
+          "why": "Mountain traditions, beautiful visuals",
+          "url": "search for this on channel"
+        }
+      ]
+    },
+    {
+      "id": "ukrainian_news_slow",
+      "title": "1+1 News (with subtitles)",
+      "source": "1+1 Ukraine",
+      "url": "https://www.youtube.com/@1aborplus",
+      "type": "news",
+      "tier": "bridge",
+      "description": "Major Ukrainian news channel. Formal, clear speech. Use auto-generated subtitles. Good for current events.",
+      "duration": null,
+      "episodes": null,
+      "topics": ["news", "current events", "politics", "society"],
+      "difficulty": {
+        "speed": "moderate",
+        "vocabulary": "intermediate",
+        "accent": "standard"
+      },
+      "hasSubtitles": true,
+      "hasTranscript": false,
+      "recommended": false,
+      "whyIncluded": "News anchors speak clearly. Current events create urgency to understand. Save for month 3+.",
+      "startHere": "Wait until you have 50+ hours of input"
+    },
+    {
+      "id": "zelensky_servant",
+      "title": "Servant of the People (Слуга Народу)",
+      "source": "Netflix / YouTube",
+      "url": "https://www.youtube.com/playlist?list=PLJo-obgJSqxbzEDvUHX9jiX2Ai9vgZN_e",
+      "type": "tv_series",
+      "tier": "bridge",
+      "description": "The comedy series where Zelensky played a teacher who becomes president. Now historically fascinating. Natural dialogue, humor helps engagement.",
+      "duration": null,
+      "episodes": 51,
+      "topics": ["politics", "comedy", "daily life", "corruption", "society"],
+      "difficulty": {
+        "speed": "native",
+        "vocabulary": "intermediate",
+        "accent": "standard"
+      },
+      "hasSubtitles": true,
+      "hasTranscript": false,
+      "recommended": true,
+      "whyIncluded": "Compelling story you'll WANT to understand. Pre-knowledge of Zelensky helps comprehension. Comedy is great for acquisition.",
+      "startHere": "Season 1, Episode 1"
+    },
+    {
+      "id": "ukrainian_music_playlist",
+      "title": "Modern Ukrainian Music Mix",
+      "source": "Various",
+      "url": null,
+      "type": "music",
+      "tier": "gateway",
+      "description": "Music is the secret weapon. Emotional, repetitive, catchy. Lyrics burn into memory without effort.",
+      "duration": null,
+      "episodes": null,
+      "topics": ["music", "culture", "emotions"],
+      "difficulty": {
+        "speed": "varies",
+        "vocabulary": "varies",
+        "accent": "varies"
+      },
+      "hasSubtitles": false,
+      "hasTranscript": true,
+      "recommended": true,
+      "whyIncluded": "Nothing beats music for emotional encoding. Find lyrics online, listen repeatedly.",
+      "suggestedArtists": [
+        {
+          "name": "Okean Elzy (Океан Ельзи)",
+          "genre": "Rock",
+          "startWith": "Така як ти (Such as You)",
+          "why": "Ukraine's biggest rock band. Clear vocals, emotional songs."
+        },
+        {
+          "name": "KAZKA",
+          "genre": "Pop/Folk",
+          "startWith": "Плакала (Cried)",
+          "why": "Modern pop with folk elements. Catchy, widely known."
+        },
+        {
+          "name": "Jamala",
+          "genre": "Pop/Soul",
+          "startWith": "1944",
+          "why": "Eurovision winner. Powerful, clear vocals."
+        },
+        {
+          "name": "Dakha Brakha (ДахаБраха)",
+          "genre": "World/Folk",
+          "startWith": "Baby",
+          "why": "Unique folk sound. Rhythmic, mesmerizing."
+        },
+        {
+          "name": "Антитіла (Antytila)",
+          "genre": "Pop Rock",
+          "startWith": "TDME",
+          "why": "Energetic, modern sound."
+        },
+        {
+          "name": "Тіна Кароль (Tina Karol)",
+          "genre": "Pop",
+          "startWith": "Намалюю тобі зірку",
+          "why": "Clear pop vocals, romantic themes."
+        }
+      ]
+    },
+    {
+      "id": "ukrainian_audiobooks_children",
+      "title": "Ukrainian Children's Audiobooks",
+      "source": "Various",
+      "url": "https://www.youtube.com/results?search_query=ukrainian+audiobook+children",
+      "type": "audiobook",
+      "tier": "gateway",
+      "description": "Children's stories read aloud. Simple vocabulary, clear pronunciation, repetitive structures. Don't skip this - it's not beneath you.",
+      "duration": null,
+      "episodes": null,
+      "topics": ["stories", "vocabulary", "culture"],
+      "difficulty": {
+        "speed": "slow",
+        "vocabulary": "beginner",
+        "accent": "standard"
+      },
+      "hasSubtitles": false,
+      "hasTranscript": false,
+      "recommended": true,
+      "whyIncluded": "Krashen's research shows children's content is IDEAL for adult learners. Simple structures, high repetition, complete comprehensibility.",
+      "startHere": "Search 'українська казка аудіо' (Ukrainian fairy tale audio)"
+    },
+    {
+      "id": "radio_svoboda",
+      "title": "Radio Svoboda Ukraine",
+      "source": "Radio Free Europe",
+      "url": "https://www.radiosvoboda.org/",
+      "type": "radio",
+      "tier": "native",
+      "description": "Professional journalism in Ukrainian. Clear but full-speed native speech. Current events focus.",
+      "duration": null,
+      "episodes": null,
+      "topics": ["news", "politics", "interviews", "analysis"],
+      "difficulty": {
+        "speed": "native",
+        "vocabulary": "advanced",
+        "accent": "standard"
+      },
+      "hasSubtitles": false,
+      "hasTranscript": true,
+      "recommended": false,
+      "whyIncluded": "Goal content - this is what fluency sounds like. Save for month 6+.",
+      "startHere": "Wait until you can follow 60%+ of bridge content"
+    },
+    {
+      "id": "hromadske_tv",
+      "title": "Hromadske TV",
+      "source": "Hromadske",
+      "url": "https://www.youtube.com/@HromadskeTV",
+      "type": "news",
+      "tier": "native",
+      "description": "Independent Ukrainian media. Interviews, analysis, documentaries. Full native speed.",
+      "duration": null,
+      "episodes": null,
+      "topics": ["news", "interviews", "society", "politics"],
+      "difficulty": {
+        "speed": "native",
+        "vocabulary": "advanced",
+        "accent": "mixed"
+      },
+      "hasSubtitles": true,
+      "hasTranscript": false,
+      "recommended": false,
+      "whyIncluded": "Authentic journalism. Multiple speakers with natural interruptions. Advanced goal content.",
+      "startHere": "Wait until month 6+"
+    },
+    {
+      "id": "ukrainian_tiktok_compilation",
+      "title": "Ukrainian TikTok/Shorts",
+      "source": "Various",
+      "url": null,
+      "type": "shorts",
+      "tier": "bridge",
+      "description": "Short-form content. Slang, humor, trends. Window into how young Ukrainians actually talk.",
+      "duration": null,
+      "episodes": null,
+      "topics": ["humor", "trends", "slang", "daily life"],
+      "difficulty": {
+        "speed": "native",
+        "vocabulary": "intermediate",
+        "accent": "mixed"
+      },
+      "hasSubtitles": false,
+      "hasTranscript": false,
+      "recommended": false,
+      "whyIncluded": "Cultural immersion. Understand your colleagues' humor references. Low-stakes, high-repetition.",
+      "startHere": "Search 'Ukrainian TikTok compilation' on YouTube"
+    }
+  ],
+  "listeningSchedule": {
+    "week1_4": {
+      "focus": "Cyrillic + Gateway Content",
+      "dailyGoal": "30-60 min",
+      "primaryContent": ["ukrainian_lessons_podcast", "easy_ukrainian", "ukrainian_music_playlist"],
+      "notes": "Focus on Cyrillic Trainer first. Listen to music casually. Start podcast from Episode 1."
+    },
+    "week5_8": {
+      "focus": "Gateway Content Immersion",
+      "dailyGoal": "60 min",
+      "primaryContent": ["ukrainian_lessons_podcast", "easy_ukrainian", "ukrainian_audiobooks_children"],
+      "notes": "Should be reading Cyrillic now. Add children's audiobooks. Music with lyrics displayed."
+    },
+    "month2_3": {
+      "focus": "Bridge to Real Content",
+      "dailyGoal": "60 min",
+      "primaryContent": ["ukrainer_main", "zelensky_servant", "easy_ukrainian"],
+      "notes": "Start Ukrainer with English subs, move to Ukrainian subs. Begin Servant of the People."
+    },
+    "month4_6": {
+      "focus": "Bridge Content Mastery",
+      "dailyGoal": "60+ min",
+      "primaryContent": ["ukrainer_main", "zelensky_servant", "ukrainian_news_slow"],
+      "notes": "Ukrainian subs only. Add news clips. Notice how much more you understand."
+    },
+    "month6_plus": {
+      "focus": "Native Content",
+      "dailyGoal": "60+ min",
+      "primaryContent": ["radio_svoboda", "hromadske_tv", "any content that interests you"],
+      "notes": "Graduate to no subtitles. Follow your interests. You're acquiring now, not studying."
+    }
+  }
+}
