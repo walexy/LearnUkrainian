@@ -105,3 +105,8 @@ Ukrainian Cyrillic letters are learned in phases:
 - `/cyrillic` - Cyrillic Trainer (Learn/Practice/Progress tabs)
 - `/listening` - Listening Library (Browse/Log/History tabs)
 - `/dashboard` - Full progress dashboard with milestones
+
+## Documentation
+
+- [Project Plan](docs/ukrainian-learning-app-plan.md) - Core philosophy, architecture, feature specs, and implementation roadmap
+- [Workflow Orchestration](docs/Workflow-Orchestration.md) - Planning guidelines, subagent strategy, and task management
