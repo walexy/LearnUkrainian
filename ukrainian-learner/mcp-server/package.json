@@ -1,0 +1,41 @@
+{
+  "name": "learn-ukrainian-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Ukrainian learning app - enables personalized AI tutoring via Claude Desktop",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "learn-ukrainian-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "claude",
+    "ukrainian",
+    "language-learning",
+    "ai-tutor"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/learn-ukrainian"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist/**/*"
+  ]
+}

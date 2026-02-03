@@ -453,6 +453,105 @@ function Dashboard() {
           </div>
         </div>
 
+        {/* Claude Desktop Integration */}
+        <div className="pt-4 border-t border-gray-100 mb-6">
+          <details className="text-sm">
+            <summary className="cursor-pointer hover:text-ukrainian-blue font-medium text-gray-700 flex items-center gap-2">
+              <span className="text-lg">🤖</span>
+              Connect to Claude Desktop
+            </summary>
+            <div className="mt-3 p-4 bg-gradient-to-r from-ukrainian-blue/5 to-purple-50 rounded-lg">
+              <p className="text-gray-600 mb-4">
+                Get personalized AI tutoring based on your progress! Claude will know your weak areas and create custom practice sessions.
+              </p>
+
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-medium text-sm text-gray-700 mb-2">1. Copy this configuration</h4>
+                  <div className="relative">
+                    <pre className="bg-gray-900 text-green-400 p-3 rounded-lg text-xs overflow-x-auto">
+{`{
+  "mcpServers": {
+    "learn-ukrainian": {
+      "command": "npx",
+      "args": ["-y", "learn-ukrainian-mcp"]
+    }
+  }
+}`}
+                    </pre>
+                    <button
+                      onClick={() => {
+                        const config = `{
+  "mcpServers": {
+    "learn-ukrainian": {
+      "command": "npx",
+      "args": ["-y", "learn-ukrainian-mcp"]
+    }
+  }
+}`
+                        navigator.clipboard.writeText(config)
+                        alert('Config copied! Now paste it into your Claude Desktop config file.')
+                      }}
+                      className="absolute top-2 right-2 px-2 py-1 bg-gray-700 hover:bg-gray-600 text-white text-xs rounded"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-medium text-sm text-gray-700 mb-2">2. Open your config file</h4>
+                  <p className="text-xs text-gray-500 mb-2">
+                    <strong>Mac:</strong> <code className="bg-gray-100 px-1 rounded">~/Library/Application Support/Claude/claude_desktop_config.json</code>
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    <strong>Windows:</strong> <code className="bg-gray-100 px-1 rounded">%APPDATA%\Claude\claude_desktop_config.json</code>
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="font-medium text-sm text-gray-700 mb-2">3. Restart Claude Desktop</h4>
+                  <p className="text-xs text-gray-500">
+                    After saving, restart Claude Desktop. Then ask: "What should I practice in Ukrainian today?"
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <h4 className="font-medium text-sm text-gray-700 mb-2">4. Export your progress</h4>
+                <p className="text-xs text-gray-500 mb-3">
+                  Download your progress and save it to <code className="bg-gray-100 px-1 rounded">~/.language-learner/progress.json</code>
+                </p>
+                <button
+                  onClick={() => {
+                    // Get all progress data from localStorage
+                    const stored = localStorage.getItem('ukrainian-learner-progress')
+                    if (!stored) {
+                      alert('No progress data to export yet!')
+                      return
+                    }
+
+                    const data = JSON.parse(stored)
+                    const blob = new Blob([JSON.stringify(data.state, null, 2)], { type: 'application/json' })
+                    const url = URL.createObjectURL(blob)
+                    const a = document.createElement('a')
+                    a.href = url
+                    a.download = 'progress.json'
+                    a.click()
+                    URL.revokeObjectURL(url)
+                  }}
+                  className="btn btn-primary text-sm"
+                >
+                  Export Progress
+                </button>
+                <p className="text-xs text-gray-400 mt-2">
+                  Re-export whenever you want Claude to see your latest progress.
+                </p>
+              </div>
+            </div>
+          </details>
+        </div>
+
         {/* Data management */}
         <div className="pt-4 border-t border-gray-100">
           <details className="text-sm text-gray-400">

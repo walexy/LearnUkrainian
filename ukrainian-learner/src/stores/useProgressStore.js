@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import * as api from '../utils/api'
 
 const useProgressStore = create(
   persist(
@@ -36,10 +37,72 @@ const useProgressStore = create(
       currentStreak: 0,
       lastPracticeDate: null,
 
-      // Record a drill attempt
-      recordAttempt: (letter, isCorrect) => {
-        const today = new Date().toISOString().split('T')[0]
+      // Cloud sync state
+      cloudSync: {
+        enabled: false,
+        lastSynced: null,
+        syncing: false,
+        error: null,
+      },
 
+      // ============ CLOUD SYNC ============
+
+      // Enable cloud sync (called after login)
+      enableCloudSync: () => {
+        set({ cloudSync: { ...get().cloudSync, enabled: true, error: null } })
+      },
+
+      // Disable cloud sync (called after logout)
+      disableCloudSync: () => {
+        set({ cloudSync: { enabled: false, lastSynced: null, syncing: false, error: null } })
+      },
+
+      // Sync progress from cloud
+      syncFromCloud: async (language = 'uk') => {
+        const { cloudSync } = get()
+        if (!cloudSync.enabled) return
+
+        set({ cloudSync: { ...cloudSync, syncing: true, error: null } })
+
+        try {
+          const data = await api.fetchProgress(language)
+
+          // Merge cloud data with local state
+          set((state) => ({
+            letterProgress: data.letterProgress || state.letterProgress,
+            listeningSessions: data.listeningSessions || state.listeningSessions,
+            totalListeningMinutes: data.totalListeningMinutes || state.totalListeningMinutes,
+            unlockedMilestones: data.unlockedMilestones || state.unlockedMilestones,
+            manualAchievements: data.manualAchievements || state.manualAchievements,
+            acquiredWords: data.acquiredWords || state.acquiredWords,
+            onboarding: data.onboarding || state.onboarding,
+            uiSettings: data.uiSettings || state.uiSettings,
+            currentStreak: data.currentStreak ?? state.currentStreak,
+            lastPracticeDate: data.lastPracticeDate || state.lastPracticeDate,
+            cloudSync: {
+              ...state.cloudSync,
+              syncing: false,
+              lastSynced: new Date().toISOString(),
+            },
+          }))
+        } catch (error) {
+          console.error('Cloud sync failed:', error)
+          set((state) => ({
+            cloudSync: {
+              ...state.cloudSync,
+              syncing: false,
+              error: error.message,
+            },
+          }))
+        }
+      },
+
+      // Record a drill attempt (with cloud sync)
+      recordAttempt: async (letter, isCorrect) => {
+        const today = new Date().toISOString().split('T')[0]
+        const { cloudSync } = get()
+
+        // Update local state immediately
         set((state) => {
           const current = state.letterProgress[letter] || { correct: 0, total: 0, lastPracticed: null }
 
@@ -70,6 +133,13 @@ const useProgressStore = create(
             lastPracticeDate: today,
           }
         })
+
+        // Sync to cloud if enabled (fire-and-forget)
+        if (cloudSync.enabled) {
+          api.recordAttempt(letter, isCorrect).catch(err => {
+            console.warn('Cloud sync failed for attempt:', err)
+          })
+        }
       },
 
       // Get accuracy for a specific letter
@@ -88,7 +158,7 @@ const useProgressStore = create(
 
       // Get count of mastered letters
       getMasteredCount: () => {
-        const { letterProgress, isMastered } = get()
+        const { letterProgress } = get()
         return Object.keys(letterProgress).filter(letter => {
           const progress = letterProgress[letter]
           return progress && progress.total >= 5 && (progress.correct / progress.total) >= 0.8
@@ -174,10 +244,12 @@ const useProgressStore = create(
         }
       },
 
-      // Record a listening session
-      recordListeningSession: (session) => {
+      // Record a listening session (with cloud sync)
+      recordListeningSession: async (session) => {
         const today = new Date().toISOString().split('T')[0]
+        const { cloudSync } = get()
 
+        // Update local state immediately
         set((state) => {
           // Update streak
           let newStreak = state.currentStreak
@@ -200,6 +272,13 @@ const useProgressStore = create(
             lastPracticeDate: today,
           }
         })
+
+        // Sync to cloud if enabled (fire-and-forget)
+        if (cloudSync.enabled) {
+          api.recordSession(session).catch(err => {
+            console.warn('Cloud sync failed for session:', err)
+          })
+        }
       },
 
       // Get listening stats
@@ -288,11 +367,14 @@ const useProgressStore = create(
 
       // ============ WORD ACQUISITION ============
 
-      // Log a word (increment if exists, add if new)
-      logWord: (word, meaning = '', source = 'listening') => {
+      // Log a word (increment if exists, add if new) - with cloud sync
+      logWord: async (word, meaning = '', source = 'listening') => {
         const normalizedWord = word.trim().toLowerCase()
         if (!normalizedWord) return
 
+        const { cloudSync } = get()
+
+        // Update local state immediately
         set((state) => {
           const existing = state.acquiredWords.find(w => w.word.toLowerCase() === normalizedWord)
 
@@ -329,6 +411,13 @@ const useProgressStore = create(
             }
           }
         })
+
+        // Sync to cloud if enabled (fire-and-forget)
+        if (cloudSync.enabled) {
+          api.logWord(word.trim(), meaning, source).catch(err => {
+            console.warn('Cloud sync failed for word:', err)
+          })
+        }
       },
 
       // Get word stats
