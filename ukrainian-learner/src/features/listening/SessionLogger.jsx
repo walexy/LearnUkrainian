@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import WordCapture from './WordCapture'
 
 const intentionOptions = [
   { value: 'focused', label: 'Focused listening', description: 'Active attention, trying to understand' },
@@ -20,6 +21,7 @@ function SessionLogger({ content, onSave, onCancel }) {
   const [comprehension, setComprehension] = useState(50)
   const [notes, setNotes] = useState('')
   const [wouldListenAgain, setWouldListenAgain] = useState(null)
+  const [wordsLogged, setWordsLogged] = useState(false)
 
   const handleStartSession = () => {
     setStep('post')
@@ -236,16 +238,24 @@ function SessionLogger({ content, onSave, onCancel }) {
         </div>
       </div>
 
-      {/* Notes */}
+      {/* Word Capture */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-3">
+          Words you heard
+        </label>
+        <WordCapture onWordsLogged={() => setWordsLogged(true)} />
+      </div>
+
+      {/* Additional Notes */}
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Any words or phrases that stood out? (optional)
+          Any other notes? (optional)
         </label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="e.g., Heard 'дякую' several times, recognized 'добре'..."
-          rows={3}
+          placeholder="Thoughts about the content, phrases you noticed..."
+          rows={2}
           className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-ukrainian-blue resize-none"
         />
       </div>

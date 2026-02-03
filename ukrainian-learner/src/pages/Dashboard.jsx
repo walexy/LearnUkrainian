@@ -15,7 +15,7 @@ const achievementTypes = [
 ]
 
 function Dashboard() {
-  const { getStats, getMasteredCount, getListeningStats, getRecentSessions, listeningSessions, getManualAchievements, logManualAchievement, resetProgress } = useProgressStore()
+  const { getStats, getMasteredCount, getListeningStats, getRecentSessions, listeningSessions, getManualAchievements, logManualAchievement, resetProgress, getWordStats, getMilestoneWords, uiSettings, setUkrainianUILevel } = useProgressStore()
   const { getAllMilestones, getUnlockedMilestones, getCelebrationMessage } = useMilestones()
 
   const [showAchievementModal, setShowAchievementModal] = useState(false)
@@ -29,6 +29,8 @@ function Dashboard() {
   const allMilestones = getAllMilestones()
   const unlockedMilestones = getUnlockedMilestones()
   const manualAchievements = getManualAchievements()
+  const wordStats = getWordStats()
+  const milestoneWords = getMilestoneWords()
 
   const celebrationMessage = getCelebrationMessage()
 
@@ -131,6 +133,74 @@ function Dashboard() {
           </p>
         </div>
       </div>
+
+      {/* Word Acquisition Stats */}
+      {wordStats.totalWords > 0 && (
+        <div className="card">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-lg">Words Acquired</h2>
+            <span className="text-sm text-gray-500">
+              {wordStats.totalWords} words tracked
+            </span>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4 mb-4">
+            <div className="bg-gray-50 rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-ukrainian-blue">{wordStats.totalWords}</div>
+              <div className="text-xs text-gray-500">Words</div>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-purple-600">{wordStats.totalEncounters}</div>
+              <div className="text-xs text-gray-500">Encounters</div>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-green-600">{milestoneWords.length}</div>
+              <div className="text-xs text-gray-500">Milestones</div>
+            </div>
+          </div>
+
+          {/* Recent words */}
+          {wordStats.recentWords.length > 0 && (
+            <div className="border-t border-gray-100 pt-4">
+              <h3 className="text-sm font-medium text-gray-500 mb-2">Recent Words</h3>
+              <div className="flex flex-wrap gap-2">
+                {wordStats.recentWords.slice(0, 8).map(word => (
+                  <span
+                    key={word.id}
+                    className="px-3 py-1 bg-ukrainian-blue/10 text-ukrainian-blue rounded-full text-sm"
+                    title={word.meaning || 'No meaning logged'}
+                  >
+                    {word.word}
+                    {word.timesEncountered > 1 && (
+                      <span className="text-ukrainian-blue/60 ml-1">×{word.timesEncountered}</span>
+                    )}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Milestone words */}
+          {milestoneWords.length > 0 && (
+            <div className="border-t border-gray-100 pt-4 mt-4">
+              <h3 className="text-sm font-medium text-gray-500 mb-2">
+                🎉 Milestone Words (5+ encounters)
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {milestoneWords.map(word => (
+                  <span
+                    key={word.id}
+                    className="px-3 py-1 bg-gradient-to-r from-ukrainian-blue/20 to-ukrainian-yellow/20 text-gray-800 rounded-full text-sm font-medium"
+                    title={`${word.meaning || 'No meaning'} - heard ${word.timesEncountered} times`}
+                  >
+                    {word.word} ×{word.timesEncountered}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Progress sections */}
       <div className="grid gap-6 lg:grid-cols-2">
@@ -349,24 +419,71 @@ function Dashboard() {
         </div>
       )}
 
-      {/* Data management */}
+      {/* Settings */}
+      <div className="card">
+        <h2 className="font-semibold text-lg mb-4">Settings</h2>
+
+        {/* Ukrainian UI Toggle */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Interface Language
+          </label>
+          <p className="text-sm text-gray-500 mb-3">
+            Gradually immerse yourself in Ukrainian by changing the UI language.
+          </p>
+          <div className="flex gap-2">
+            {[
+              { value: 'none', label: 'English', description: 'All English' },
+              { value: 'labels', label: 'Mixed', description: 'Ukrainian (English)' },
+              { value: 'full', label: 'Українська', description: 'All Ukrainian' },
+            ].map(option => (
+              <button
+                key={option.value}
+                onClick={() => setUkrainianUILevel(option.value)}
+                className={`flex-1 p-3 rounded-lg border-2 transition-colors ${
+                  (uiSettings?.ukrainianUILevel || 'none') === option.value
+                    ? 'border-ukrainian-blue bg-ukrainian-blue/5'
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
+              >
+                <div className="font-medium text-sm">{option.label}</div>
+                <div className="text-xs text-gray-500">{option.description}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Data management */}
+        <div className="pt-4 border-t border-gray-100">
+          <details className="text-sm text-gray-400">
+            <summary className="cursor-pointer hover:text-gray-600">Data Management</summary>
+            <div className="mt-2 p-4 bg-gray-50 rounded-lg text-left">
+              <p className="text-gray-600 mb-3">
+                Your progress is stored locally in your browser.
+              </p>
+              <button
+                onClick={() => {
+                  if (confirm('Are you sure you want to reset ALL progress? This cannot be undone.')) {
+                    resetProgress()
+                  }
+                }}
+                className="text-red-600 hover:text-red-700 text-sm"
+              >
+                Reset All Progress
+              </button>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      {/* Footer spacing */}
       <div className="text-center text-sm text-gray-400">
-        <details className="inline-block">
-          <summary className="cursor-pointer hover:text-gray-600">Data Management</summary>
+        <details className="inline-block hidden">
+          <summary className="cursor-pointer hover:text-gray-600">Data Management (Legacy)</summary>
           <div className="mt-2 p-4 bg-gray-50 rounded-lg text-left">
             <p className="text-gray-600 mb-3">
-              Your progress is stored locally in your browser.
+              Moved to Settings above.
             </p>
-            <button
-              onClick={() => {
-                if (confirm('Are you sure you want to reset ALL progress? This cannot be undone.')) {
-                  resetProgress()
-                }
-              }}
-              className="text-red-600 hover:text-red-700 text-sm"
-            >
-              Reset All Progress
-            </button>
           </div>
         </details>
       </div>

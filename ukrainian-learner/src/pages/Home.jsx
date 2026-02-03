@@ -1,12 +1,21 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useProgressStore from '../stores/useProgressStore'
 import ProgressBar from '../components/ProgressBar'
+import NextStepWidget from '../components/NextStepWidget'
+import WelcomeFlow from '../components/WelcomeFlow'
 
 function Home() {
-  const { getMasteredCount, getStats, getListeningStats } = useProgressStore()
+  const { getMasteredCount, getStats, getListeningStats, onboarding } = useProgressStore()
+  const [showWelcome, setShowWelcome] = useState(!onboarding.hasSeenWelcome)
   const stats = getStats()
   const listeningStats = getListeningStats()
   const masteredCount = getMasteredCount()
+
+  // Show welcome flow for brand new users
+  if (showWelcome && !onboarding.hasSeenWelcome) {
+    return <WelcomeFlow onComplete={() => setShowWelcome(false)} />
+  }
 
   return (
     <div className="space-y-8">
@@ -105,33 +114,8 @@ function Home() {
         </Link>
       </div>
 
-      {/* Motivation */}
-      {stats.totalAttempts === 0 && listeningStats.sessionCount === 0 && (
-        <div className="bg-ukrainian-blue/5 border border-ukrainian-blue/20 rounded-xl p-6 text-center">
-          <p className="text-gray-700">
-            <span className="font-medium">Tip:</span> Start with the Cyrillic Trainer.
-            You can't absorb written input if you're still decoding letters.
-          </p>
-        </div>
-      )}
-
-      {stats.totalAttempts > 0 && stats.totalAttempts < 50 && (
-        <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
-          <p className="text-gray-700">
-            <span className="font-medium">Keep going!</span> You've made {stats.totalAttempts} attempts.
-            Every practice session rewires your brain a little more.
-          </p>
-        </div>
-      )}
-
-      {masteredCount >= 15 && listeningStats.sessionCount === 0 && (
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 text-center">
-          <p className="text-gray-700">
-            <span className="font-medium">Ready for input!</span> You've mastered {masteredCount} letters.
-            Time to start the Listening Library and get some comprehensible input!
-          </p>
-        </div>
-      )}
+      {/* Next Step Recommendation */}
+      <NextStepWidget />
     </div>
   )
 }

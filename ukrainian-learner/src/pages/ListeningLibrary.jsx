@@ -3,6 +3,7 @@ import useContent from '../hooks/useContent'
 import useProgressStore from '../stores/useProgressStore'
 import ContentBrowser from '../features/listening/ContentBrowser'
 import SessionLogger from '../features/listening/SessionLogger'
+import PreListeningScaffold from '../features/listening/PreListeningScaffold'
 import ProgressBar from '../components/ProgressBar'
 
 const tabs = [
@@ -30,6 +31,7 @@ function ListeningLibrary() {
   const [activeTab, setActiveTab] = useState('browse')
   const [selectedContent, setSelectedContent] = useState(null)
   const [selectedTierFilter, setSelectedTierFilter] = useState(null)
+  const [prepareContent, setPrepareContent] = useState(null)
 
   const content = getContent()
   const stats = getListeningStats()
@@ -50,6 +52,14 @@ function ListeningLibrary() {
   const handleCancelSession = () => {
     setSelectedContent(null)
     setActiveTab('browse')
+  }
+
+  const handlePrepare = (contentItem) => {
+    setPrepareContent(contentItem)
+  }
+
+  const handleClosePrepare = () => {
+    setPrepareContent(null)
   }
 
   if (loading) {
@@ -208,6 +218,7 @@ function ListeningLibrary() {
           <ContentBrowser
             content={content}
             onStartSession={handleStartSession}
+            onPrepare={handlePrepare}
             initialTierFilter={selectedTierFilter}
             recommendedTier={tierReadiness.recommendedTier}
           />
@@ -313,6 +324,18 @@ function ListeningLibrary() {
           </div>
         )}
       </div>
+
+      {/* Pre-listening scaffold modal */}
+      {prepareContent && (
+        <PreListeningScaffold
+          content={prepareContent}
+          onClose={handleClosePrepare}
+          onStartSession={(content) => {
+            handleClosePrepare()
+            handleStartSession(content)
+          }}
+        />
+      )}
     </div>
   )
 }

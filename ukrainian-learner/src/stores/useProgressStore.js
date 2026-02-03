@@ -17,6 +17,21 @@ const useProgressStore = create(
       // Manual milestone logs (for subjective achievements)
       manualAchievements: [],
 
+      // Word acquisition tracking
+      acquiredWords: [],
+
+      // Onboarding state
+      onboarding: {
+        hasSeenWelcome: false,
+        preferredPath: null, // 'listening-first' | 'alphabet-first'
+        seenHints: [],
+      },
+
+      // UI settings
+      uiSettings: {
+        ukrainianUILevel: 'none', // 'none' | 'labels' | 'full'
+      },
+
       // Streak tracking
       currentStreak: 0,
       lastPracticeDate: null,
@@ -269,6 +284,227 @@ const useProgressStore = create(
         return get().manualAchievements || []
       },
 
+      // ============ WORD ACQUISITION ============
+
+      // Log a word (increment if exists, add if new)
+      logWord: (word, meaning = '', source = 'listening') => {
+        const normalizedWord = word.trim().toLowerCase()
+        if (!normalizedWord) return
+
+        set((state) => {
+          const existing = state.acquiredWords.find(w => w.word.toLowerCase() === normalizedWord)
+
+          if (existing) {
+            // Increment encounter count
+            return {
+              acquiredWords: state.acquiredWords.map(w =>
+                w.word.toLowerCase() === normalizedWord
+                  ? {
+                      ...w,
+                      timesEncountered: w.timesEncountered + 1,
+                      lastSeen: new Date().toISOString(),
+                      encounters: [...(w.encounters || []), { date: new Date().toISOString(), source }],
+                    }
+                  : w
+              ),
+            }
+          } else {
+            // Add new word
+            return {
+              acquiredWords: [
+                ...state.acquiredWords,
+                {
+                  id: `word_${Date.now()}`,
+                  word: word.trim(),
+                  meaning,
+                  firstHeard: new Date().toISOString(),
+                  lastSeen: new Date().toISOString(),
+                  timesEncountered: 1,
+                  source,
+                  encounters: [{ date: new Date().toISOString(), source }],
+                },
+              ],
+            }
+          }
+        })
+      },
+
+      // Get word stats
+      getWordStats: () => {
+        const { acquiredWords } = get()
+        const weekAgo = new Date()
+        weekAgo.setDate(weekAgo.getDate() - 7)
+
+        const thisWeek = acquiredWords.filter(w => new Date(w.firstHeard) >= weekAgo).length
+        const milestoneWords = acquiredWords.filter(w => w.timesEncountered >= 5).length
+
+        return {
+          total: acquiredWords.length,
+          thisWeek,
+          milestoneWords,
+          bySource: {
+            listening: acquiredWords.filter(w => w.source === 'listening').length,
+            cyrillic: acquiredWords.filter(w => w.source === 'cyrillic').length,
+            colleague: acquiredWords.filter(w => w.source === 'colleague').length,
+          },
+        }
+      },
+
+      // Get recent words
+      getRecentWords: (limit = 10) => {
+        const { acquiredWords } = get()
+        return [...acquiredWords]
+          .sort((a, b) => new Date(b.lastSeen) - new Date(a.lastSeen))
+          .slice(0, limit)
+      },
+
+      // Get milestone words (encountered 5+ times)
+      getMilestoneWords: () => {
+        const { acquiredWords } = get()
+        return acquiredWords
+          .filter(w => w.timesEncountered >= 5)
+          .sort((a, b) => b.timesEncountered - a.timesEncountered)
+      },
+
+      // ============ ONBOARDING ============
+
+      // Mark welcome as seen
+      completeWelcome: (preferredPath = null) => {
+        set((state) => ({
+          onboarding: {
+            ...state.onboarding,
+            hasSeenWelcome: true,
+            preferredPath,
+          },
+        }))
+      },
+
+      // Mark a hint as seen
+      markHintSeen: (hintId) => {
+        set((state) => ({
+          onboarding: {
+            ...state.onboarding,
+            seenHints: [...new Set([...state.onboarding.seenHints, hintId])],
+          },
+        }))
+      },
+
+      // Check if hint has been seen
+      hasSeenHint: (hintId) => {
+        return get().onboarding.seenHints.includes(hintId)
+      },
+
+      // ============ UI SETTINGS ============
+
+      // Set Ukrainian UI level
+      setUkrainianUILevel: (level) => {
+        set((state) => ({
+          uiSettings: {
+            ...state.uiSettings,
+            ukrainianUILevel: level,
+          },
+        }))
+      },
+
+      // ============ NEXT STEP RECOMMENDATION ============
+
+      // Get personalized next step recommendation
+      getNextStep: () => {
+        const state = get()
+        const stats = state.getStats()
+        const listeningStats = state.getListeningStats()
+        const tierReadiness = state.getTierReadiness()
+        const masteredCount = state.getMasteredCount()
+        const wordStats = state.getWordStats()
+
+        // Brand new user - offer choice
+        if (stats.totalAttempts === 0 && listeningStats.sessionCount === 0) {
+          return {
+            type: 'choice',
+            title: 'Choose Your Path',
+            description: 'Both paths lead to fluency. Pick what excites you!',
+            options: [
+              { label: 'Start Listening', path: '/listening', icon: '🎧', description: 'Dive into comprehensible input' },
+              { label: 'Learn Letters', path: '/cyrillic', icon: '🔤', description: 'Master the Cyrillic alphabet first' },
+            ],
+          }
+        }
+
+        // Has listening but no alphabet - suggest alphabet to enhance reading
+        if (listeningStats.sessionCount >= 3 && stats.totalAttempts === 0) {
+          return {
+            type: 'suggestion',
+            title: 'Enhance Your Listening',
+            description: 'Learning Cyrillic letters will help you recognize words you hear.',
+            action: { label: 'Start Cyrillic', path: '/cyrillic', icon: '🔤' },
+          }
+        }
+
+        // Has alphabet but no listening - suggest listening to apply knowledge
+        if (masteredCount >= 10 && listeningStats.sessionCount === 0) {
+          return {
+            type: 'suggestion',
+            title: 'Time for Input!',
+            description: `You've mastered ${masteredCount} letters. Put them to use with real Ukrainian content!`,
+            action: { label: 'Browse Content', path: '/listening', icon: '🎧' },
+          }
+        }
+
+        // Ready for tier advancement
+        if (tierReadiness.gateway.readyForNext && listeningStats.sessionsByTier.bridge < 3) {
+          return {
+            type: 'milestone',
+            title: 'Ready for Bridge!',
+            description: `Your Gateway comprehension is ${tierReadiness.gateway.avgComprehension}%. Challenge yourself!`,
+            action: { label: 'Try Bridge Content', path: '/listening', icon: '🚀' },
+          }
+        }
+
+        if (tierReadiness.bridge.readyForNext && listeningStats.sessionsByTier.native < 3) {
+          return {
+            type: 'milestone',
+            title: 'Ready for Native!',
+            description: `Bridge comprehension at ${tierReadiness.bridge.avgComprehension}%. You're ready for authentic content!`,
+            action: { label: 'Try Native Content', path: '/listening', icon: '🎉' },
+          }
+        }
+
+        // Has words logged but hasn't visited ColleagueConnection
+        if (wordStats.total >= 5 && !state.onboarding.seenHints.includes('colleague-visited')) {
+          return {
+            type: 'suggestion',
+            title: 'Connect with Colleagues',
+            description: 'Learn why Ukrainian speakers say things a certain way in English.',
+            action: { label: 'Explore Patterns', path: '/colleague', icon: '🤝' },
+          }
+        }
+
+        // Default: encourage continued practice based on recency
+        const lastSession = state.listeningSessions[state.listeningSessions.length - 1]
+        const lastPractice = state.lastPracticeDate
+
+        if (listeningStats.sessionCount > 0 && (!lastPractice || new Date(lastPractice) < new Date(lastSession?.date || 0))) {
+          return {
+            type: 'continue',
+            title: 'Keep Listening',
+            description: `${listeningStats.totalHours} hours logged. Every session builds acquisition!`,
+            action: { label: 'Log Session', path: '/listening', icon: '🎧' },
+          }
+        }
+
+        // Balanced user - suggest what they've done less of recently
+        return {
+          type: 'continue',
+          title: 'Continue Learning',
+          description: 'Keep building your Ukrainian skills!',
+          action: {
+            label: masteredCount < 20 ? 'Practice Letters' : 'Listen More',
+            path: masteredCount < 20 ? '/cyrillic' : '/listening',
+            icon: masteredCount < 20 ? '🔤' : '🎧',
+          },
+        }
+      },
+
       // Reset all progress
       resetProgress: () => {
         set({
@@ -277,6 +513,15 @@ const useProgressStore = create(
           totalListeningMinutes: 0,
           unlockedMilestones: [],
           manualAchievements: [],
+          acquiredWords: [],
+          onboarding: {
+            hasSeenWelcome: false,
+            preferredPath: null,
+            seenHints: [],
+          },
+          uiSettings: {
+            ukrainianUILevel: 'none',
+          },
           currentStreak: 0,
           lastPracticeDate: null,
         })

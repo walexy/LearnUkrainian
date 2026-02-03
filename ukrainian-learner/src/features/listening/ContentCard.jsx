@@ -31,7 +31,7 @@ const difficultyColors = {
   advanced: 'text-red-600',
 }
 
-function ContentCard({ content, onStartSession, onViewDetails, compact = false }) {
+function ContentCard({ content, onStartSession, onViewDetails, onPrepare, compact = false }) {
   const formatDuration = (seconds) => {
     if (!seconds) return null
     const mins = Math.floor(seconds / 60)
@@ -175,7 +175,7 @@ function ContentCard({ content, onStartSession, onViewDetails, compact = false }
       )}
 
       {/* Actions */}
-      <div className="mt-6 flex gap-3">
+      <div className="mt-6 flex flex-wrap gap-3">
         {content.url && (
           <a
             href={content.url}
@@ -185,6 +185,14 @@ function ContentCard({ content, onStartSession, onViewDetails, compact = false }
           >
             Open Source ↗
           </a>
+        )}
+        {onPrepare && (
+          <button
+            onClick={() => onPrepare(content)}
+            className="btn btn-secondary text-sm"
+          >
+            🎯 Prepare
+          </button>
         )}
         <button
           onClick={() => onStartSession?.(content)}

@@ -1,18 +1,20 @@
 import { Link, useLocation } from 'react-router-dom'
 import useProgressStore from '../stores/useProgressStore'
+import { t } from '../utils/i18n'
 
 function Layout({ children }) {
   const location = useLocation()
-  const { getMasteredCount, getStats, getListeningStats } = useProgressStore()
+  const { getMasteredCount, getStats, getListeningStats, uiSettings } = useProgressStore()
   const stats = getStats()
   const listeningStats = getListeningStats()
+  const uiLevel = uiSettings?.ukrainianUILevel || 'none'
 
   const navItems = [
-    { path: '/', label: 'Home', icon: '🏠' },
-    { path: '/cyrillic', label: 'Cyrillic', icon: '🔤' },
-    { path: '/listening', label: 'Listening', icon: '🎧' },
-    { path: '/colleague', label: 'Colleague', icon: '🤝' },
-    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+    { path: '/', labelKey: 'nav.home', icon: '🏠' },
+    { path: '/cyrillic', labelKey: 'nav.cyrillic', icon: '🔤' },
+    { path: '/listening', labelKey: 'nav.listening', icon: '🎧' },
+    { path: '/colleague', labelKey: 'nav.colleague', icon: '🤝' },
+    { path: '/dashboard', labelKey: 'nav.dashboard', icon: '📊' },
   ]
 
   return (
@@ -40,7 +42,7 @@ function Layout({ children }) {
                   }`}
                 >
                   <span className="sm:hidden">{item.icon}</span>
-                  <span className="hidden sm:inline">{item.label}</span>
+                  <span className="hidden sm:inline">{t(item.labelKey, uiLevel)}</span>
                 </Link>
               ))}
             </nav>

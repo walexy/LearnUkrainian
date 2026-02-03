@@ -15,7 +15,7 @@ const typeLabels = {
   shorts: 'Short-form',
 }
 
-function ContentBrowser({ content, onStartSession, initialTierFilter = null, recommendedTier = null }) {
+function ContentBrowser({ content, onStartSession, onPrepare, initialTierFilter = null, recommendedTier = null }) {
   const [selectedTier, setSelectedTier] = useState(initialTierFilter || 'all')
   const [selectedType, setSelectedType] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
@@ -210,6 +210,7 @@ function ContentBrowser({ content, onStartSession, initialTierFilter = null, rec
                       compact
                       onViewDetails={handleViewDetails}
                       onStartSession={onStartSession}
+                      onPrepare={onPrepare}
                     />
                   ))}
                 </div>
@@ -225,6 +226,7 @@ function ContentBrowser({ content, onStartSession, initialTierFilter = null, rec
               key={item.id}
               content={item}
               onStartSession={onStartSession}
+              onPrepare={onPrepare}
             />
           ))}
         </div>
@@ -249,6 +251,10 @@ function ContentBrowser({ content, onStartSession, initialTierFilter = null, rec
                 onStartSession={(content) => {
                   handleCloseDetails()
                   onStartSession?.(content)
+                }}
+                onPrepare={(content) => {
+                  handleCloseDetails()
+                  onPrepare?.(content)
                 }}
               />
             </div>
