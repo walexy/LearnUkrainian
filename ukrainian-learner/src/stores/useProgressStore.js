@@ -150,7 +150,9 @@ const useProgressStore = create(
             sessionCount: listeningSessions.filter(s => s.contentTier === 'native').length,
             readyForNext: false, // No tier after native
           },
+          // Only recommend a tier if user has enough sessions to evaluate
           recommendedTier:
+            listeningSessions.length < 3 ? null : // Not enough data yet
             gatewayAvg === null || gatewayAvg < 70 ? 'gateway' :
             bridgeAvg === null || bridgeAvg < 70 ? 'bridge' : 'native',
         }
