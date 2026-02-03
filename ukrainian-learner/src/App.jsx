@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import CyrillicTrainer from './pages/CyrillicTrainer'
 import ListeningLibrary from './pages/ListeningLibrary'
 import Dashboard from './pages/Dashboard'
+import ColleagueConnection from './pages/ColleagueConnection'
 import useMilestones from './hooks/useMilestones'
 import { MilestoneToastContainer } from './components/MilestoneToast'
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/cyrillic" element={<CyrillicTrainer />} />
         <Route path="/listening" element={<ListeningLibrary />} />
+        <Route path="/colleague" element={<ColleagueConnection />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
 

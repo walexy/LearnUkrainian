@@ -14,6 +14,9 @@ const useProgressStore = create(
       // Milestones
       unlockedMilestones: [],
 
+      // Manual milestone logs (for subjective achievements)
+      manualAchievements: [],
+
       // Streak tracking
       currentStreak: 0,
       lastPracticeDate: null,
@@ -77,14 +80,65 @@ const useProgressStore = create(
         }).length
       },
 
-      // Get letters that need more practice (< 80% accuracy or < 5 attempts)
-      getWeakLetters: (allLetters) => {
+      // Get letters that need more practice (< threshold accuracy or < 5 attempts)
+      getWeakLetters: (allLetters, threshold = 0.8) => {
         const { letterProgress } = get()
         return allLetters.filter(letter => {
           const progress = letterProgress[letter]
           if (!progress || progress.total < 5) return true
-          return (progress.correct / progress.total) < 0.8
+          return (progress.correct / progress.total) < threshold
         })
+      },
+
+      // Get struggling letters (< 60% accuracy with at least 3 attempts)
+      getStrugglingLetters: (allLetters) => {
+        const { letterProgress } = get()
+        return allLetters.filter(letter => {
+          const progress = letterProgress[letter]
+          if (!progress || progress.total < 3) return false
+          return (progress.correct / progress.total) < 0.6
+        })
+      },
+
+      // Get tier readiness based on comprehension history
+      getTierReadiness: () => {
+        const { listeningSessions } = get()
+
+        // Need at least 5 sessions at a tier to evaluate readiness
+        const getAverageComprehension = (tier) => {
+          const tierSessions = listeningSessions
+            .filter(s => s.contentTier === tier && s.comprehension != null)
+            .slice(-10) // Last 10 sessions
+          if (tierSessions.length < 5) return null
+          return Math.round(
+            tierSessions.reduce((sum, s) => sum + s.comprehension, 0) / tierSessions.length
+          )
+        }
+
+        const gatewayAvg = getAverageComprehension('gateway')
+        const bridgeAvg = getAverageComprehension('bridge')
+        const nativeAvg = getAverageComprehension('native')
+
+        return {
+          gateway: {
+            avgComprehension: gatewayAvg,
+            sessionCount: listeningSessions.filter(s => s.contentTier === 'gateway').length,
+            readyForNext: gatewayAvg !== null && gatewayAvg >= 70,
+          },
+          bridge: {
+            avgComprehension: bridgeAvg,
+            sessionCount: listeningSessions.filter(s => s.contentTier === 'bridge').length,
+            readyForNext: bridgeAvg !== null && bridgeAvg >= 70,
+          },
+          native: {
+            avgComprehension: nativeAvg,
+            sessionCount: listeningSessions.filter(s => s.contentTier === 'native').length,
+            readyForNext: false, // No tier after native
+          },
+          recommendedTier:
+            gatewayAvg === null || gatewayAvg < 70 ? 'gateway' :
+            bridgeAvg === null || bridgeAvg < 70 ? 'bridge' : 'native',
+        }
       },
 
       // Get overall stats
@@ -194,6 +248,27 @@ const useProgressStore = create(
         return get().unlockedMilestones.includes(milestoneId)
       },
 
+      // Log a manual achievement (subjective milestones)
+      logManualAchievement: (achievement) => {
+        const id = Date.now().toString()
+        set((state) => ({
+          manualAchievements: [
+            ...state.manualAchievements,
+            {
+              id,
+              date: new Date().toISOString(),
+              ...achievement,
+            },
+          ],
+        }))
+        return id
+      },
+
+      // Get manual achievements
+      getManualAchievements: () => {
+        return get().manualAchievements || []
+      },
+
       // Reset all progress
       resetProgress: () => {
         set({
@@ -201,6 +276,7 @@ const useProgressStore = create(
           listeningSessions: [],
           totalListeningMinutes: 0,
           unlockedMilestones: [],
+          manualAchievements: [],
           currentStreak: 0,
           lastPracticeDate: null,
         })

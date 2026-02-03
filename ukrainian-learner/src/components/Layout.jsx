@@ -11,6 +11,7 @@ function Layout({ children }) {
     { path: '/', label: 'Home', icon: '🏠' },
     { path: '/cyrillic', label: 'Cyrillic', icon: '🔤' },
     { path: '/listening', label: 'Listening', icon: '🎧' },
+    { path: '/colleague', label: 'Colleague', icon: '🤝' },
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
   ]
 

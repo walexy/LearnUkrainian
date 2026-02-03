@@ -1,11 +1,26 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useProgressStore from '../stores/useProgressStore'
 import useMilestones from '../hooks/useMilestones'
 import ProgressBar from '../components/ProgressBar'
+import ComprehensionChart from '../components/ComprehensionChart'
+
+const achievementTypes = [
+  { id: 'understood_colleague', label: 'Understood a colleague', emoji: '🎉', description: 'First time understanding Ukrainian at work' },
+  { id: 'said_dyakuyu', label: 'Said Дякую', emoji: '🙏', description: 'Used Ukrainian to say thank you' },
+  { id: 'recognized_word', label: 'Recognized a word', emoji: '💡', description: 'Caught a word I learned while listening' },
+  { id: 'conversation', label: 'Had a conversation', emoji: '💬', description: 'Exchanged words in Ukrainian' },
+  { id: 'read_sign', label: 'Read something', emoji: '📖', description: 'Read Ukrainian text in the wild' },
+  { id: 'other', label: 'Other breakthrough', emoji: '✨', description: 'Another special moment' },
+]
 
 function Dashboard() {
-  const { getStats, getMasteredCount, getListeningStats, getRecentSessions, resetProgress } = useProgressStore()
+  const { getStats, getMasteredCount, getListeningStats, getRecentSessions, listeningSessions, getManualAchievements, logManualAchievement, resetProgress } = useProgressStore()
   const { getAllMilestones, getUnlockedMilestones, getCelebrationMessage } = useMilestones()
+
+  const [showAchievementModal, setShowAchievementModal] = useState(false)
+  const [selectedAchievementType, setSelectedAchievementType] = useState(null)
+  const [achievementNote, setAchievementNote] = useState('')
 
   const cyrillicStats = getStats()
   const listeningStats = getListeningStats()
@@ -13,8 +28,24 @@ function Dashboard() {
   const recentSessions = getRecentSessions(5)
   const allMilestones = getAllMilestones()
   const unlockedMilestones = getUnlockedMilestones()
+  const manualAchievements = getManualAchievements()
 
   const celebrationMessage = getCelebrationMessage()
+
+  const handleLogAchievement = () => {
+    if (selectedAchievementType) {
+      const typeInfo = achievementTypes.find(t => t.id === selectedAchievementType)
+      logManualAchievement({
+        type: selectedAchievementType,
+        emoji: typeInfo?.emoji || '✨',
+        label: typeInfo?.label || 'Achievement',
+        note: achievementNote,
+      })
+      setShowAchievementModal(false)
+      setSelectedAchievementType(null)
+      setAchievementNote('')
+    }
+  }
 
   // Calculate overall progress
   const cyrillicProgress = Math.round((masteredCount / 33) * 100)
@@ -180,6 +211,57 @@ function Dashboard() {
         </div>
       </div>
 
+      {/* Comprehension Growth Chart */}
+      {listeningStats.sessionCount >= 2 && (
+        <div className="card">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-lg">Comprehension Growth</h2>
+            <span className="text-sm text-gray-500">Last {Math.min(30, listeningStats.sessionCount)} sessions</span>
+          </div>
+          <ComprehensionChart sessions={listeningSessions} />
+        </div>
+      )}
+
+      {/* Personal Breakthroughs */}
+      <div className="card">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold text-lg">Personal Breakthroughs</h2>
+          <button
+            onClick={() => setShowAchievementModal(true)}
+            className="btn btn-primary text-sm"
+          >
+            + Log Moment
+          </button>
+        </div>
+
+        {manualAchievements.length === 0 ? (
+          <div className="text-center py-6 text-gray-500">
+            <p className="text-3xl mb-2">✨</p>
+            <p className="text-sm">Log your first breakthrough moment!</p>
+            <p className="text-xs text-gray-400 mt-1">
+              Understanding a colleague, saying дякую, recognizing words...
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {[...manualAchievements].reverse().slice(0, 5).map(achievement => (
+              <div key={achievement.id} className="flex items-start gap-3 p-3 bg-gradient-to-r from-ukrainian-blue/5 to-ukrainian-yellow/5 rounded-lg">
+                <span className="text-xl">{achievement.emoji}</span>
+                <div className="flex-1">
+                  <div className="font-medium text-sm">{achievement.label}</div>
+                  {achievement.note && (
+                    <p className="text-xs text-gray-600 mt-1 italic">"{achievement.note}"</p>
+                  )}
+                  <p className="text-xs text-gray-400 mt-1">
+                    {new Date(achievement.date).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Milestones */}
       <div className="card">
         <div className="flex items-center justify-between mb-4">
@@ -288,6 +370,88 @@ function Dashboard() {
           </div>
         </details>
       </div>
+
+      {/* Achievement logging modal */}
+      {showAchievementModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold">Log a Breakthrough</h2>
+                <button
+                  onClick={() => {
+                    setShowAchievementModal(false)
+                    setSelectedAchievementType(null)
+                    setAchievementNote('')
+                  }}
+                  className="text-gray-400 hover:text-gray-600 text-xl"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <p className="text-sm text-gray-600 mb-4">
+                What moment would you like to celebrate?
+              </p>
+
+              <div className="space-y-2 mb-4">
+                {achievementTypes.map(type => (
+                  <button
+                    key={type.id}
+                    onClick={() => setSelectedAchievementType(type.id)}
+                    className={`w-full p-3 rounded-lg text-left flex items-center gap-3 transition-all ${
+                      selectedAchievementType === type.id
+                        ? 'bg-ukrainian-blue/10 border-2 border-ukrainian-blue'
+                        : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'
+                    }`}
+                  >
+                    <span className="text-2xl">{type.emoji}</span>
+                    <div>
+                      <div className="font-medium text-sm">{type.label}</div>
+                      <div className="text-xs text-gray-500">{type.description}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              {selectedAchievementType && (
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Add a note (optional)
+                  </label>
+                  <textarea
+                    value={achievementNote}
+                    onChange={(e) => setAchievementNote(e.target.value)}
+                    placeholder="What made this moment special?"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm resize-none"
+                    rows={3}
+                  />
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowAchievementModal(false)
+                    setSelectedAchievementType(null)
+                    setAchievementNote('')
+                  }}
+                  className="btn btn-secondary flex-1"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleLogAchievement}
+                  disabled={!selectedAchievementType}
+                  className="btn btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Log Moment
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

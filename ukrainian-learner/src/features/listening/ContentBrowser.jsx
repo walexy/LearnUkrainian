@@ -15,8 +15,8 @@ const typeLabels = {
   shorts: 'Short-form',
 }
 
-function ContentBrowser({ content, onStartSession }) {
-  const [selectedTier, setSelectedTier] = useState('all')
+function ContentBrowser({ content, onStartSession, initialTierFilter = null, recommendedTier = null }) {
+  const [selectedTier, setSelectedTier] = useState(initialTierFilter || 'all')
   const [selectedType, setSelectedType] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [viewMode, setViewMode] = useState('grid') // 'grid' or 'list'
@@ -96,20 +96,26 @@ function ContentBrowser({ content, onStartSession }) {
 
           {/* Tier filter */}
           <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
-            {['all', ...tierOrder].map(tier => (
-              <button
-                key={tier}
-                onClick={() => setSelectedTier(tier)}
-                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                  selectedTier === tier
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                {tier === 'all' ? 'All' : tier.charAt(0).toUpperCase() + tier.slice(1)}
-                <span className="ml-1 text-gray-400">({tierCounts[tier]})</span>
-              </button>
-            ))}
+            {['all', ...tierOrder].map(tier => {
+              const isRecommended = tier === recommendedTier && tier !== 'all'
+              return (
+                <button
+                  key={tier}
+                  onClick={() => setSelectedTier(tier)}
+                  className={`px-3 py-1.5 text-sm rounded-md transition-colors relative ${
+                    selectedTier === tier
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  } ${isRecommended && selectedTier !== tier ? 'ring-2 ring-ukrainian-blue ring-offset-1' : ''}`}
+                >
+                  {tier === 'all' ? 'All' : tier.charAt(0).toUpperCase() + tier.slice(1)}
+                  <span className="ml-1 text-gray-400">({tierCounts[tier]})</span>
+                  {isRecommended && selectedTier !== tier && (
+                    <span className="absolute -top-1 -right-1 w-2 h-2 bg-ukrainian-blue rounded-full" />
+                  )}
+                </button>
+              )
+            })}
           </div>
         </div>
 

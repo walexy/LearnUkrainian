@@ -4,10 +4,11 @@ import useProgressStore from '../../stores/useProgressStore'
 import { shuffle, pickRandomExcluding } from '../../utils/shuffle'
 
 const QUESTIONS_PER_SESSION = 10
+const FOCUSED_SESSION_SIZE = 5
 
-function LetterDrill({ letters, onComplete }) {
+function LetterDrill({ letters, onComplete, focusedLetters = null }) {
   const { speakLetter, isSpeaking } = useSpeech()
-  const { recordAttempt, getWeakLetters } = useProgressStore()
+  const { recordAttempt, getWeakLetters, getStrugglingLetters } = useProgressStore()
 
   const [sessionQuestions, setSessionQuestions] = useState([])
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -15,12 +16,59 @@ function LetterDrill({ letters, onComplete }) {
   const [showResult, setShowResult] = useState(false)
   const [sessionResults, setSessionResults] = useState([])
   const [isComplete, setIsComplete] = useState(false)
+  const [showFocusPrompt, setShowFocusPrompt] = useState(false)
+  const [isFocusedMode, setIsFocusedMode] = useState(false)
 
-  // Generate session questions on mount
+  // Check for struggling letters on mount
+  const allLetterChars = letters.map(l => l.letter)
+  const strugglingLetters = getStrugglingLetters(allLetterChars)
+
   useEffect(() => {
-    if (letters.length === 0) return
+    // Show focus prompt if there are struggling letters and we're not already in focused mode
+    if (strugglingLetters.length > 0 && !focusedLetters && !isFocusedMode && sessionQuestions.length === 0) {
+      setShowFocusPrompt(true)
+    }
+  }, [strugglingLetters.length, focusedLetters, isFocusedMode, sessionQuestions.length])
 
-    const allLetterChars = letters.map(l => l.letter)
+  // Generate questions helper function
+  const generateQuestions = useCallback((targetLetters, sessionSize) => {
+    const questions = targetLetters.map(letterChar => {
+      const correctLetter = letters.find(l => l.letter === letterChar)
+      const wrongOptions = pickRandomExcluding(
+        letters.filter(l => l.letter !== letterChar),
+        3
+      )
+      const options = shuffle([correctLetter, ...wrongOptions])
+
+      return {
+        letter: correctLetter,
+        options,
+        correctAnswer: correctLetter.letter,
+      }
+    })
+    return questions.slice(0, sessionSize)
+  }, [letters])
+
+  // Start focused practice on struggling letters
+  const startFocusedPractice = useCallback(() => {
+    setShowFocusPrompt(false)
+    setIsFocusedMode(true)
+
+    // Generate focused questions from struggling letters
+    const targetLetters = shuffle([...strugglingLetters])
+    // Repeat letters to fill the session if needed
+    while (targetLetters.length < FOCUSED_SESSION_SIZE) {
+      targetLetters.push(strugglingLetters[targetLetters.length % strugglingLetters.length])
+    }
+
+    const questions = generateQuestions(targetLetters.slice(0, FOCUSED_SESSION_SIZE), FOCUSED_SESSION_SIZE)
+    setSessionQuestions(questions)
+  }, [strugglingLetters, generateQuestions])
+
+  // Start regular practice
+  const startRegularPractice = useCallback(() => {
+    setShowFocusPrompt(false)
+    setIsFocusedMode(false)
 
     // Prioritize weak letters, but include some random ones too
     const weakLetters = getWeakLetters(allLetterChars)
@@ -45,24 +93,33 @@ function LetterDrill({ letters, onComplete }) {
     // Shuffle the final question order
     questionLetters = shuffle(questionLetters).slice(0, QUESTIONS_PER_SESSION)
 
-    // Generate questions with options
-    const questions = questionLetters.map(letterChar => {
-      const correctLetter = letters.find(l => l.letter === letterChar)
-      const wrongOptions = pickRandomExcluding(
-        letters.filter(l => l.letter !== letterChar),
-        3
-      )
-      const options = shuffle([correctLetter, ...wrongOptions])
-
-      return {
-        letter: correctLetter,
-        options,
-        correctAnswer: correctLetter.letter,
-      }
-    })
-
+    const questions = generateQuestions(questionLetters, QUESTIONS_PER_SESSION)
     setSessionQuestions(questions)
-  }, [letters, getWeakLetters])
+  }, [allLetterChars, getWeakLetters, generateQuestions])
+
+  // Generate session questions on mount (if no prompt needed)
+  useEffect(() => {
+    if (letters.length === 0) return
+    if (showFocusPrompt) return // Wait for user choice
+    if (sessionQuestions.length > 0) return // Already have questions
+
+    // If focused letters were passed in, use those
+    if (focusedLetters && focusedLetters.length > 0) {
+      setIsFocusedMode(true)
+      const targetLetters = shuffle([...focusedLetters])
+      while (targetLetters.length < FOCUSED_SESSION_SIZE) {
+        targetLetters.push(focusedLetters[targetLetters.length % focusedLetters.length])
+      }
+      const questions = generateQuestions(targetLetters.slice(0, FOCUSED_SESSION_SIZE), FOCUSED_SESSION_SIZE)
+      setSessionQuestions(questions)
+      return
+    }
+
+    // Otherwise start regular practice if no struggling letters
+    if (strugglingLetters.length === 0) {
+      startRegularPractice()
+    }
+  }, [letters, showFocusPrompt, sessionQuestions.length, focusedLetters, strugglingLetters.length, generateQuestions, startRegularPractice])
 
   const currentQuestion = sessionQuestions[currentQuestionIndex]
 
@@ -115,33 +172,73 @@ function LetterDrill({ letters, onComplete }) {
     setShowResult(false)
     setSessionResults([])
     setIsComplete(false)
-    // Re-generate questions
-    const allLetterChars = letters.map(l => l.letter)
-    const shuffled = shuffle(allLetterChars).slice(0, QUESTIONS_PER_SESSION)
-    const questions = shuffled.map(letterChar => {
-      const correctLetter = letters.find(l => l.letter === letterChar)
-      const wrongOptions = pickRandomExcluding(
-        letters.filter(l => l.letter !== letterChar),
-        3
-      )
-      const options = shuffle([correctLetter, ...wrongOptions])
-      return {
-        letter: correctLetter,
-        options,
-        correctAnswer: correctLetter.letter,
-      }
-    })
-    setSessionQuestions(questions)
-  }, [letters])
+    setSessionQuestions([])
+
+    // Check again for struggling letters and show prompt if needed
+    const currentStruggling = getStrugglingLetters(allLetterChars)
+    if (currentStruggling.length > 0 && !focusedLetters) {
+      setShowFocusPrompt(true)
+    } else {
+      startRegularPractice()
+    }
+  }, [allLetterChars, focusedLetters, getStrugglingLetters, startRegularPractice])
+
+  // Focus prompt view
+  if (showFocusPrompt && strugglingLetters.length > 0) {
+    return (
+      <div className="card max-w-lg mx-auto text-center">
+        <div className="text-4xl mb-4">🎯</div>
+        <h2 className="text-xl font-bold mb-2">Focus Practice Available</h2>
+        <p className="text-gray-600 mb-4">
+          You have {strugglingLetters.length} letter{strugglingLetters.length !== 1 ? 's' : ''} that need{strugglingLetters.length === 1 ? 's' : ''} extra attention:
+        </p>
+
+        {/* Show struggling letters */}
+        <div className="flex flex-wrap justify-center gap-2 mb-6">
+          {strugglingLetters.slice(0, 8).map(letterChar => {
+            const letter = letters.find(l => l.letter === letterChar)
+            return (
+              <div
+                key={letterChar}
+                className="w-12 h-12 rounded-lg bg-red-100 text-red-700 flex items-center justify-center text-xl font-bold"
+                title={letter?.name}
+              >
+                {letterChar}
+              </div>
+            )
+          })}
+          {strugglingLetters.length > 8 && (
+            <div className="w-12 h-12 rounded-lg bg-gray-100 text-gray-500 flex items-center justify-center text-sm">
+              +{strugglingLetters.length - 8}
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <button onClick={startFocusedPractice} className="btn btn-primary">
+            Focus on Trouble Letters
+          </button>
+          <button onClick={startRegularPractice} className="btn btn-secondary">
+            Regular Practice
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   // Session complete view
   if (isComplete) {
     const correctCount = sessionResults.filter(r => r.correct).length
     const accuracy = Math.round((correctCount / sessionResults.length) * 100)
 
+    // Check if there are still struggling letters after this session
+    const stillStruggling = getStrugglingLetters(allLetterChars)
+
     return (
       <div className="card max-w-lg mx-auto text-center">
-        <h2 className="text-2xl font-bold mb-4">Session Complete!</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          {isFocusedMode ? 'Focus Session Complete!' : 'Session Complete!'}
+        </h2>
 
         <div className="py-6">
           <div className={`text-6xl font-bold ${
@@ -182,10 +279,24 @@ function LetterDrill({ letters, onComplete }) {
             : "Every attempt rewires your brain. Keep going!"}
         </p>
 
-        <div className="flex gap-3 justify-center mt-6">
+        {/* Show remaining struggling letters */}
+        {stillStruggling.length > 0 && !isFocusedMode && (
+          <div className="mt-4 p-3 bg-yellow-50 rounded-lg">
+            <p className="text-sm text-yellow-800">
+              {stillStruggling.length} letter{stillStruggling.length !== 1 ? 's' : ''} still need{stillStruggling.length === 1 ? 's' : ''} practice
+            </p>
+          </div>
+        )}
+
+        <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
           <button onClick={handleRestart} className="btn btn-primary">
             Practice Again
           </button>
+          {stillStruggling.length > 0 && (
+            <button onClick={startFocusedPractice} className="btn btn-secondary">
+              Focus on Trouble Letters
+            </button>
+          )}
           {onComplete && (
             <button onClick={onComplete} className="btn btn-secondary">
               Done

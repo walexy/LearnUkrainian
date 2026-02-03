@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import useAlphabet from '../hooks/useAlphabet'
 import MnemonicCard from '../features/cyrillic/MnemonicCard'
 import LetterDrill from '../features/cyrillic/LetterDrill'
+import ReadingDrill from '../features/cyrillic/ReadingDrill'
 import LetterProgress from '../features/cyrillic/LetterProgress'
 
 const tabs = [
   { id: 'learn', label: 'Learn', icon: '📚' },
   { id: 'practice', label: 'Practice', icon: '🎯' },
+  { id: 'read', label: 'Read', icon: '📖' },
   { id: 'progress', label: 'Progress', icon: '📊' },
 ]
 
@@ -14,8 +16,23 @@ function CyrillicTrainer() {
   const { alphabet, loading, error, getLetters } = useAlphabet()
   const [activeTab, setActiveTab] = useState('learn')
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0)
+  const [focusedLetters, setFocusedLetters] = useState(null)
 
   const letters = getLetters()
+
+  // Handle focus practice from Progress tab
+  const handleFocusPractice = useCallback((troubleLetters) => {
+    setFocusedLetters(troubleLetters)
+    setActiveTab('practice')
+  }, [])
+
+  // Clear focused letters when switching away from practice
+  const handleTabChange = useCallback((tabId) => {
+    if (tabId !== 'practice') {
+      setFocusedLetters(null)
+    }
+    setActiveTab(tabId)
+  }, [])
 
   if (loading) {
     return (
@@ -62,7 +79,7 @@ function CyrillicTrainer() {
         {tabs.map(tab => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => handleTabChange(tab.id)}
             className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
               activeTab === tab.id
                 ? 'bg-white text-gray-900 shadow-sm'
@@ -122,13 +139,22 @@ function CyrillicTrainer() {
 
         {activeTab === 'practice' && (
           <LetterDrill
+            key={focusedLetters ? focusedLetters.join(',') : 'regular'}
             letters={letters}
-            onComplete={() => setActiveTab('progress')}
+            focusedLetters={focusedLetters}
+            onComplete={() => handleTabChange('progress')}
+          />
+        )}
+
+        {activeTab === 'read' && (
+          <ReadingDrill
+            letters={letters}
+            onComplete={() => handleTabChange('progress')}
           />
         )}
 
         {activeTab === 'progress' && (
-          <LetterProgress letters={letters} />
+          <LetterProgress letters={letters} onFocusPractice={handleFocusPractice} />
         )}
       </div>
     </div>

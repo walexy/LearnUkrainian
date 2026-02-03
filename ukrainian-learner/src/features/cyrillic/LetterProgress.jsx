@@ -17,14 +17,16 @@ const categoryLabels = {
   ukrainianSpecials: 'Ukrainian Specials',
 }
 
-function LetterProgress({ letters }) {
-  const { letterProgress, getAccuracy, getMasteredCount, getStats, resetProgress } = useProgressStore()
+function LetterProgress({ letters, onFocusPractice }) {
+  const { letterProgress, getAccuracy, getMasteredCount, getStats, getStrugglingLetters, resetProgress } = useProgressStore()
   const { speakLetter } = useSpeech()
   const [selectedLetter, setSelectedLetter] = useState(null)
   const [showResetConfirm, setShowResetConfirm] = useState(false)
 
   const stats = getStats()
   const masteredCount = getMasteredCount()
+  const allLetterChars = letters.map(l => l.letter)
+  const strugglingLetters = getStrugglingLetters(allLetterChars)
 
   // Group letters by category
   const lettersByCategory = letters.reduce((acc, letter) => {
@@ -62,6 +64,51 @@ function LetterProgress({ letters }) {
 
   return (
     <div className="space-y-6">
+      {/* Trouble letters alert */}
+      {strugglingLetters.length > 0 && (
+        <div className="card bg-red-50 border-l-4 border-red-400">
+          <div className="flex items-start justify-between">
+            <div>
+              <h3 className="font-semibold text-red-800 flex items-center gap-2">
+                <span>🎯</span>
+                Trouble Letters
+              </h3>
+              <p className="text-sm text-red-700 mt-1">
+                {strugglingLetters.length} letter{strugglingLetters.length !== 1 ? 's' : ''} with &lt;60% accuracy need{strugglingLetters.length === 1 ? 's' : ''} extra practice
+              </p>
+            </div>
+            {onFocusPractice && (
+              <button
+                onClick={() => onFocusPractice(strugglingLetters)}
+                className="btn btn-primary text-sm whitespace-nowrap"
+              >
+                Focus Practice
+              </button>
+            )}
+          </div>
+
+          <div className="flex flex-wrap gap-2 mt-3">
+            {strugglingLetters.map(letterChar => {
+              const letter = letters.find(l => l.letter === letterChar)
+              const progress = letterProgress[letterChar]
+              const accuracy = progress ? Math.round((progress.correct / progress.total) * 100) : 0
+
+              return (
+                <button
+                  key={letterChar}
+                  onClick={() => handleLetterClick(letter)}
+                  className="w-12 h-12 rounded-lg bg-red-100 text-red-700 flex flex-col items-center justify-center hover:bg-red-200 transition-colors"
+                  title={`${letter?.name} - ${accuracy}% accuracy`}
+                >
+                  <span className="text-lg font-bold">{letterChar}</span>
+                  <span className="text-xs">{accuracy}%</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Overall progress */}
       <div className="card">
         <h2 className="text-lg font-semibold mb-4">Overall Progress</h2>

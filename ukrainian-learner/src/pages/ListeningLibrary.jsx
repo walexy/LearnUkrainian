@@ -11,16 +11,30 @@ const tabs = [
   { id: 'history', label: 'History', icon: '📊' },
 ]
 
+const tierLabels = {
+  gateway: 'Gateway',
+  bridge: 'Bridge',
+  native: 'Native',
+}
+
+const tierColors = {
+  gateway: 'green',
+  bridge: 'yellow',
+  native: 'purple',
+}
+
 function ListeningLibrary() {
   const { loading, error, getContent, getSchedule } = useContent()
-  const { recordListeningSession, getListeningStats, getRecentSessions } = useProgressStore()
+  const { recordListeningSession, getListeningStats, getRecentSessions, getTierReadiness } = useProgressStore()
 
   const [activeTab, setActiveTab] = useState('browse')
   const [selectedContent, setSelectedContent] = useState(null)
+  const [selectedTierFilter, setSelectedTierFilter] = useState(null)
 
   const content = getContent()
   const stats = getListeningStats()
   const recentSessions = getRecentSessions(10)
+  const tierReadiness = getTierReadiness()
 
   const handleStartSession = (contentItem) => {
     setSelectedContent(contentItem)
@@ -97,6 +111,79 @@ function ListeningLibrary() {
         )}
       </div>
 
+      {/* Tier readiness banner */}
+      {tierReadiness.gateway.readyForNext && !tierReadiness.bridge.readyForNext && stats.sessionsByTier.bridge < 3 && (
+        <div className="card bg-gradient-to-r from-green-50 to-yellow-50 border-l-4 border-yellow-400">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">🚀</span>
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-900">Ready for Bridge Content!</h3>
+              <p className="text-sm text-gray-600 mt-1">
+                Your Gateway comprehension is strong at {tierReadiness.gateway.avgComprehension}%.
+                Time to challenge yourself with Bridge-level content!
+              </p>
+              <button
+                onClick={() => {
+                  setSelectedTierFilter('bridge')
+                  setActiveTab('browse')
+                }}
+                className="mt-3 text-sm font-medium text-yellow-700 hover:text-yellow-800"
+              >
+                Browse Bridge Content →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {tierReadiness.bridge.readyForNext && stats.sessionsByTier.native < 3 && (
+        <div className="card bg-gradient-to-r from-yellow-50 to-purple-50 border-l-4 border-purple-400">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">🎉</span>
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-900">Ready for Native Content!</h3>
+              <p className="text-sm text-gray-600 mt-1">
+                Impressive! Your Bridge comprehension is at {tierReadiness.bridge.avgComprehension}%.
+                You're ready for authentic native-speed content!
+              </p>
+              <button
+                onClick={() => {
+                  setSelectedTierFilter('native')
+                  setActiveTab('browse')
+                }}
+                className="mt-3 text-sm font-medium text-purple-700 hover:text-purple-800"
+              >
+                Browse Native Content →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tier progress summary (for users not yet ready) */}
+      {stats.sessionCount > 0 && tierReadiness.gateway.avgComprehension !== null && tierReadiness.gateway.avgComprehension < 70 && (
+        <div className="card bg-blue-50 border-l-4 border-blue-400">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">💪</span>
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-900">Building Your Foundation</h3>
+              <p className="text-sm text-gray-600 mt-1">
+                Gateway comprehension: {tierReadiness.gateway.avgComprehension}% (target: 70% to unlock Bridge).
+                Keep listening! Every session strengthens your understanding.
+              </p>
+              <div className="mt-3">
+                <ProgressBar
+                  value={tierReadiness.gateway.avgComprehension}
+                  max={70}
+                  showLabel={false}
+                  color="blue"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Tab navigation */}
       <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
         {tabs.map(tab => (
@@ -121,6 +208,8 @@ function ListeningLibrary() {
           <ContentBrowser
             content={content}
             onStartSession={handleStartSession}
+            initialTierFilter={selectedTierFilter}
+            recommendedTier={tierReadiness.recommendedTier}
           />
         )}
 

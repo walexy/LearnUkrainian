@@ -6,8 +6,15 @@ const intentionOptions = [
   { value: 'repeated', label: 'Repeated content', description: 'Listening to something again' },
 ]
 
+const energyOptions = [
+  { value: 'focused', label: 'Focused', icon: '🎯', description: 'Ready to concentrate', suggestion: 'Great for challenging content!' },
+  { value: 'casual', label: 'Relaxed', icon: '😌', description: 'Taking it easy', suggestion: 'Try familiar or musical content' },
+  { value: 'tired', label: 'Tired', icon: '😴', description: 'Low energy today', suggestion: 'Music or repeated content works well' },
+]
+
 function SessionLogger({ content, onSave, onCancel }) {
   const [step, setStep] = useState('pre') // 'pre' or 'post'
+  const [energy, setEnergy] = useState(null)
   const [intention, setIntention] = useState('focused')
   const [duration, setDuration] = useState(content?.duration ? Math.round(content.duration / 60) : 30)
   const [comprehension, setComprehension] = useState(50)
@@ -25,6 +32,7 @@ function SessionLogger({ content, onSave, onCancel }) {
       contentTitle: content?.title || 'Custom content',
       contentTier: content?.tier || 'gateway',
       date: new Date().toISOString(),
+      energy: energy || 'casual',
       intention,
       durationMinutes: duration,
       comprehension,
@@ -36,6 +44,8 @@ function SessionLogger({ content, onSave, onCancel }) {
 
   // Pre-session screen
   if (step === 'pre') {
+    const selectedEnergy = energyOptions.find(e => e.value === energy)
+
     return (
       <div className="card max-w-lg mx-auto">
         <h2 className="text-xl font-bold mb-4">Start Listening Session</h2>
@@ -46,6 +56,34 @@ function SessionLogger({ content, onSave, onCancel }) {
             <p className="text-sm text-gray-500">{content.source}</p>
           </div>
         )}
+
+        {/* Energy level (Affective State) */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-3">
+            How's your energy right now?
+          </label>
+          <div className="grid grid-cols-3 gap-2">
+            {energyOptions.map(option => (
+              <button
+                key={option.value}
+                onClick={() => setEnergy(option.value)}
+                className={`p-3 rounded-lg border-2 text-center transition-colors ${
+                  energy === option.value
+                    ? 'border-ukrainian-blue bg-ukrainian-blue/5'
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
+              >
+                <span className="text-2xl block mb-1">{option.icon}</span>
+                <span className="text-sm font-medium block">{option.label}</span>
+              </button>
+            ))}
+          </div>
+          {selectedEnergy && (
+            <p className="text-sm text-ukrainian-blue mt-2 bg-ukrainian-blue/5 p-2 rounded-lg">
+              💡 {selectedEnergy.suggestion}
+            </p>
+          )}
+        </div>
 
         {/* Intention */}
         <div className="mb-6">
