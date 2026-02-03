@@ -57,8 +57,10 @@ const useSpeech = () => {
     speak(text, { rate: 0.6 })
   }, [speak])
 
-  const speakWord = useCallback((word) => {
-    speak(word, { rate: 0.7 })
+  const speakWord = useCallback((wordData) => {
+    // Handle both string and object with word property
+    const text = typeof wordData === 'string' ? wordData : wordData?.word || wordData
+    speak(text, { rate: 0.7 })
   }, [speak])
 
   const speakSound = useCallback((soundDescription) => {
