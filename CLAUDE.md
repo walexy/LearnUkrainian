@@ -4,7 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A Ukrainian language learning app focused on Krashen's Input Hypothesis - acquisition through comprehensible input rather than conscious study. Designed for a commuter with 365+ hours/year of listening time.
+A Ukrainian language learning app grounded in modern second language acquisition research. Designed for a commuter with 365+ hours/year of listening time.
+
+**Pedagogical Framework:**
+- **Krashen's Input Hypothesis** - Acquisition through comprehensible input (i+1)
+- **Spaced Repetition** (Ebbinghaus) - Optimal timing for review
+- **Cognitive Load Theory** - Managing mental effort for effective learning
+- **Zone of Proximal Development** (Vygotsky) - Scaffolding just beyond current ability
+- **Desirable Difficulties** - Strategic challenges that enhance retention
+- **Self-Determination Theory** - Intrinsic motivation through autonomy and competence
 
 **Four main features:**
 1. **Cyrillic Trainer** - Alphabet learning with mnemonics, recognition drills, reading practice, and progress tracking
@@ -142,9 +150,15 @@ Ukrainian Cyrillic letters are learned in phases:
 - `/colleague` - Colleague Connection (interference patterns)
 - `/dashboard` - Full progress dashboard with milestones and MCP setup
 
-## MCP Server Integration
+## AI Tutor Integration
 
-The MCP server allows Claude Desktop to provide personalized tutoring:
+Two methods for personalized AI tutoring:
+
+### Option 1: Claude.ai (Recommended)
+From Dashboard → AI Tutor Setup → "Copy Progress for Claude.ai", paste into any Claude conversation. Works on any device, no setup required.
+
+### Option 2: MCP Server (Advanced)
+For Claude Desktop with automatic context:
 
 **Resources exposed:**
 - `learner://profile` - Letters mastered, listening hours, streak
@@ -160,6 +174,9 @@ The MCP server allows Claude Desktop to provide personalized tutoring:
 2. Saves to `~/.language-learner/progress.json`
 3. MCP server reads this file when Claude Desktop connects
 
+### Tutor Prompt
+See [Claude Tutor Prompt](ukrainian-learner/docs/claude-tutor-prompt.md) for the full system prompt that guides AI tutoring sessions. Integrates all six pedagogical frameworks.
+
 ## Future: Cloud Sync (Planned)
 
 Supabase integration planned for cross-device sync:
@@ -170,4 +187,5 @@ Supabase integration planned for cross-device sync:
 ## Documentation
 
 - [Project Plan](docs/ukrainian-learning-app-plan.md) - Core philosophy, architecture, feature specs, and implementation roadmap
+- [Claude Tutor Prompt](ukrainian-learner/docs/claude-tutor-prompt.md) - System prompt for AI tutoring with full pedagogical framework
 - [Workflow Orchestration](docs/Workflow-Orchestration.md) - Planning guidelines, subagent strategy, and task management
