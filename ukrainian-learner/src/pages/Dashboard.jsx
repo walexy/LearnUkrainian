@@ -453,101 +453,143 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Claude Desktop Integration */}
+        {/* AI Tutor Integration */}
         <div className="pt-4 border-t border-gray-100 mb-6">
           <details className="text-sm">
             <summary className="cursor-pointer hover:text-ukrainian-blue font-medium text-gray-700 flex items-center gap-2">
               <span className="text-lg">🤖</span>
-              Connect to Claude Desktop
+              AI Tutor Setup
             </summary>
             <div className="mt-3 p-4 bg-gradient-to-r from-ukrainian-blue/5 to-purple-50 rounded-lg">
               <p className="text-gray-600 mb-4">
-                Get personalized AI tutoring based on your progress! Claude will know your weak areas and create custom practice sessions.
+                Get personalized AI tutoring based on your progress! Choose your preferred method:
               </p>
 
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-medium text-sm text-gray-700 mb-2">1. Copy this configuration</h4>
-                  <div className="relative">
-                    <pre className="bg-gray-900 text-green-400 p-3 rounded-lg text-xs overflow-x-auto">
-{`{
-  "mcpServers": {
-    "learn-ukrainian": {
-      "command": "npx",
-      "args": ["-y", "learn-ukrainian-mcp"]
-    }
-  }
-}`}
-                    </pre>
-                    <button
-                      onClick={() => {
-                        const config = `{
-  "mcpServers": {
-    "learn-ukrainian": {
-      "command": "npx",
-      "args": ["-y", "learn-ukrainian-mcp"]
-    }
-  }
-}`
-                        navigator.clipboard.writeText(config)
-                        alert('Config copied! Now paste it into your Claude Desktop config file.')
-                      }}
-                      className="absolute top-2 right-2 px-2 py-1 bg-gray-700 hover:bg-gray-600 text-white text-xs rounded"
-                    >
-                      Copy
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="font-medium text-sm text-gray-700 mb-2">2. Open your config file</h4>
-                  <p className="text-xs text-gray-500 mb-2">
-                    <strong>Mac:</strong> <code className="bg-gray-100 px-1 rounded">~/Library/Application Support/Claude/claude_desktop_config.json</code>
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    <strong>Windows:</strong> <code className="bg-gray-100 px-1 rounded">%APPDATA%\Claude\claude_desktop_config.json</code>
-                  </p>
-                </div>
-
-                <div>
-                  <h4 className="font-medium text-sm text-gray-700 mb-2">3. Restart Claude Desktop</h4>
-                  <p className="text-xs text-gray-500">
-                    After saving, restart Claude Desktop. Then ask: "What should I practice in Ukrainian today?"
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <h4 className="font-medium text-sm text-gray-700 mb-2">4. Export your progress</h4>
+              {/* Option 1: Claude.ai Project (Recommended) */}
+              <div className="mb-6 p-4 bg-white rounded-lg border-2 border-ukrainian-blue/30">
+                <h4 className="font-medium text-gray-800 mb-2 flex items-center gap-2">
+                  <span className="bg-ukrainian-blue text-white text-xs px-2 py-0.5 rounded">Recommended</span>
+                  Claude.ai Project
+                </h4>
                 <p className="text-xs text-gray-500 mb-3">
-                  Download your progress and save it to <code className="bg-gray-100 px-1 rounded">~/.language-learner/progress.json</code>
+                  Works on any device, no setup required. Just paste your progress into a Claude conversation.
                 </p>
                 <button
                   onClick={() => {
-                    // Get all progress data from localStorage
                     const stored = localStorage.getItem('ukrainian-learner-progress')
                     if (!stored) {
-                      alert('No progress data to export yet!')
+                      alert('No progress data yet! Practice some letters or log a listening session first.')
                       return
                     }
+                    const data = JSON.parse(stored).state
 
-                    const data = JSON.parse(stored)
-                    const blob = new Blob([JSON.stringify(data.state, null, 2)], { type: 'application/json' })
-                    const url = URL.createObjectURL(blob)
-                    const a = document.createElement('a')
-                    a.href = url
-                    a.download = 'progress.json'
-                    a.click()
-                    URL.revokeObjectURL(url)
+                    // Build a compact summary
+                    const letterProgress = data.letterProgress || {}
+                    const letters = Object.keys(letterProgress)
+                    const mastered = letters.filter(l => {
+                      const p = letterProgress[l]
+                      return p.total >= 5 && (p.correct / p.total) >= 0.8
+                    })
+                    const struggling = letters.filter(l => {
+                      const p = letterProgress[l]
+                      return p.total >= 3 && (p.correct / p.total) < 0.6
+                    }).map(l => `${l} (${Math.round((letterProgress[l].correct / letterProgress[l].total) * 100)}%)`)
+
+                    const sessions = data.listeningSessions || []
+                    const totalHours = Math.round((data.totalListeningMinutes || 0) / 60 * 10) / 10
+                    const byTier = {
+                      gateway: sessions.filter(s => s.contentTier === 'gateway'),
+                      bridge: sessions.filter(s => s.contentTier === 'bridge'),
+                      native: sessions.filter(s => s.contentTier === 'native'),
+                    }
+                    const avgComp = tier => {
+                      const t = byTier[tier].filter(s => s.comprehension != null)
+                      return t.length >= 3 ? Math.round(t.reduce((sum, s) => sum + s.comprehension, 0) / t.length) : null
+                    }
+
+                    const words = data.acquiredWords || []
+                    const milestoneWords = words.filter(w => w.timesEncountered >= 5)
+
+                    const prompt = `I'm learning Ukrainian using an app based on Krashen's Input Hypothesis. Here's my current progress:
+
+**Cyrillic Letters:**
+- Mastered (≥80% accuracy): ${mastered.length}/33 letters${mastered.length > 0 ? ` (${mastered.join(', ')})` : ''}
+- Struggling (<60% accuracy): ${struggling.length > 0 ? struggling.join(', ') : 'None yet'}
+
+**Listening:**
+- Total time: ${totalHours} hours across ${sessions.length} sessions
+- Gateway (beginner): ${byTier.gateway.length} sessions${avgComp('gateway') ? `, avg ${avgComp('gateway')}% comprehension` : ''}
+- Bridge (intermediate): ${byTier.bridge.length} sessions${avgComp('bridge') ? `, avg ${avgComp('bridge')}% comprehension` : ''}
+- Native: ${byTier.native.length} sessions${avgComp('native') ? `, avg ${avgComp('native')}% comprehension` : ''}
+
+**Vocabulary:**
+- Words encountered: ${words.length}
+- Milestone words (5+ exposures): ${milestoneWords.length}${milestoneWords.length > 0 ? ` - ${milestoneWords.slice(0, 5).map(w => w.word).join(', ')}${milestoneWords.length > 5 ? '...' : ''}` : ''}
+
+**Streak:** ${data.currentStreak || 0} days
+
+Based on this, what should I focus on today? Remember: use comprehensible input principles, celebrate progress, and never make me feel guilty about what I haven't done yet.`
+
+                    navigator.clipboard.writeText(prompt)
+                    alert('Progress summary copied! Paste it into a new Claude.ai conversation.')
                   }}
-                  className="btn btn-primary text-sm"
+                  className="btn btn-primary text-sm w-full"
                 >
-                  Export Progress
+                  Copy Progress for Claude.ai
                 </button>
                 <p className="text-xs text-gray-400 mt-2">
-                  Re-export whenever you want Claude to see your latest progress.
+                  Paste this into <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" className="text-ukrainian-blue hover:underline">claude.ai</a> to start a tutoring session
                 </p>
               </div>
+
+              {/* Option 2: MCP Server (Advanced) */}
+              <details className="text-xs">
+                <summary className="cursor-pointer text-gray-500 hover:text-gray-700">
+                  Advanced: Claude Desktop MCP Server
+                </summary>
+                <div className="mt-3 p-3 bg-gray-50 rounded-lg space-y-3">
+                  <p className="text-gray-600">
+                    For automatic integration with Claude Desktop (requires local setup):
+                  </p>
+
+                  <div>
+                    <p className="font-medium text-gray-700 mb-1">1. Add to Claude Desktop config:</p>
+                    <pre className="bg-gray-900 text-green-400 p-2 rounded text-xs overflow-x-auto">
+{`"learn-ukrainian": {
+  "command": "npx",
+  "args": ["-y", "learn-ukrainian-mcp"]
+}`}
+                    </pre>
+                  </div>
+
+                  <div>
+                    <p className="font-medium text-gray-700 mb-1">2. Export progress file:</p>
+                    <button
+                      onClick={() => {
+                        const stored = localStorage.getItem('ukrainian-learner-progress')
+                        if (!stored) {
+                          alert('No progress data to export yet!')
+                          return
+                        }
+                        const data = JSON.parse(stored)
+                        const blob = new Blob([JSON.stringify(data.state, null, 2)], { type: 'application/json' })
+                        const url = URL.createObjectURL(blob)
+                        const a = document.createElement('a')
+                        a.href = url
+                        a.download = 'progress.json'
+                        a.click()
+                        URL.revokeObjectURL(url)
+                      }}
+                      className="btn btn-secondary text-xs"
+                    >
+                      Download progress.json
+                    </button>
+                    <p className="text-gray-500 mt-1">
+                      Save to <code className="bg-gray-200 px-1 rounded">~/.language-learner/progress.json</code>
+                    </p>
+                  </div>
+                </div>
+              </details>
             </div>
           </details>
         </div>
