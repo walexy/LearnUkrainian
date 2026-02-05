@@ -510,11 +510,29 @@ function Dashboard() {
                     const words = data.acquiredWords || []
                     const milestoneWords = words.filter(w => w.timesEncountered >= 5)
 
-                    const prompt = `I'm learning Ukrainian using an app based on Krashen's Input Hypothesis. Here's my current progress:
+                    // Find stale letters (not practiced in 7+ days)
+                    const now = Date.now()
+                    const sevenDaysAgo = now - (7 * 24 * 60 * 60 * 1000)
+                    const staleLetters = letters.filter(l => {
+                      const p = letterProgress[l]
+                      return p.lastPracticed && new Date(p.lastPracticed).getTime() < sevenDaysAgo
+                    })
+
+                    const prompt = `I'm learning Ukrainian using an app grounded in modern second language acquisition research. The app integrates six pedagogical frameworks:
+
+1. **Krashen's Input Hypothesis** - Acquisition through comprehensible input (i+1)
+2. **Spaced Repetition** (Ebbinghaus) - Optimal timing for review
+3. **Cognitive Load Theory** - Managing mental effort for effective learning
+4. **Zone of Proximal Development** (Vygotsky) - Scaffolding just beyond current ability
+5. **Desirable Difficulties** - Strategic challenges that enhance retention
+6. **Self-Determination Theory** - Intrinsic motivation through autonomy and competence
+
+Here's my current progress:
 
 **Cyrillic Letters:**
 - Mastered (≥80% accuracy): ${mastered.length}/33 letters${mastered.length > 0 ? ` (${mastered.join(', ')})` : ''}
 - Struggling (<60% accuracy): ${struggling.length > 0 ? struggling.join(', ') : 'None yet'}
+- Stale (not practiced in 7+ days): ${staleLetters.length > 0 ? staleLetters.join(', ') : 'None'}
 
 **Listening:**
 - Total time: ${totalHours} hours across ${sessions.length} sessions
@@ -528,7 +546,12 @@ function Dashboard() {
 
 **Streak:** ${data.currentStreak || 0} days
 
-Based on this, what should I focus on today? Remember: use comprehensible input principles, celebrate progress, and never make me feel guilty about what I haven't done yet.`
+Based on this, what should I focus on today? Apply all six frameworks:
+- Prioritize stale items (spaced repetition) and struggling letters
+- Use desirable difficulties (retrieval practice, interleaving, varied context)
+- Manage cognitive load (don't overwhelm, connect to existing knowledge)
+- Offer choices, not assignments (autonomy)
+- Celebrate progress, never guilt about what I haven't done`
 
                     navigator.clipboard.writeText(prompt)
                     alert('Progress summary copied! Paste it into a new Claude.ai conversation.')
